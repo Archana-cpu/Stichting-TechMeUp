@@ -5,5 +5,4 @@ function MyNavbar() {
     </div>
   )
 }
-
 export default MyNavbar
