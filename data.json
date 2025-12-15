@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Alice Johnson",
+    "age": 29,
+    "location": "Amsterdam, NL",
+    "email": "alice.johnson@example.com",
+    "phone": "+31-20-555-0143",
+    "gender": "female",
+    "occupation": "Frontend Developer",
+    "company": "TechMeUp BV",
+    "joined_date": "2021-06-15",
+    "is_active": true
+  },
+  {
+    "name": "Mohammed Ali",
+    "age": 34,
+    "location": "Rotterdam, NL",
+    "email": "m.ali@example.com",
+    "phone": "+31-10-555-0222",
+    "gender": "male",
+    "occupation": "Data Analyst",
+    "company": "DataWorks",
+    "joined_date": "2019-11-03",
+    "is_active": false
+  },
+  {
+    "name": "Sofia Martínez",
+    "age": 27,
+    "location": "Utrecht, NL",
+    "email": "sofia.m@example.com",
+    "phone": "+31-30-555-0333",
+    "gender": "female",
+    "occupation": "Project Manager",
+    "company": "BrightProjects",
+    "joined_date": "2023-01-20",
+    "is_active": true
+  },
+  {
+    "name": "Lars van Dijk",
+    "age": 41,
+    "location": "The Hague, NL",
+    "email": "lars.vd@example.com",
+    "phone": "+31-70-555-0444",
+    "gender": "male",
+    "occupation": "DevOps Engineer",
+    "company": "InfraOps",
+    "joined_date": "2017-08-09",
+    "is_active": true
+  },
+  {
+    "name": "Emma Chen",
+    "age": 22,
+    "location": "Eindhoven, NL",
+    "email": "emma.chen@example.com",
+    "phone": "+31-40-555-0555",
+    "gender": "female",
+    "occupation": "UX Designer",
+    "company": "DesignLab",
+    "joined_date": "2024-05-02",
+    "is_active": false
+  }
+]
