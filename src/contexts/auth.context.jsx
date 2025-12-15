@@ -1,4 +1,4 @@
-import Loading from "@/components/Loading"
+import Loading from "../components/Loading"
 import axios from "axios"
 import { createContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -8,8 +8,6 @@ const AuthContext = createContext()
 function AuthWrapper({ children }) {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [isAdmin, setIsAdmin] = useState(false)
-    const [isSuperAdmin, setIsSuperAdmin] = useState(false)
     const [loggedUserInfo, setLoggedUserInfo] = useState(null)
     const [isValidatingUser, setIsValidatingUser] = useState(true)
     const navigate = useNavigate()
@@ -25,8 +23,6 @@ function AuthWrapper({ children }) {
                 setIsLoggedIn(false)
                 setLoggedUserInfo(null)
                 setIsValidatingUser(false)
-                setIsAdmin(false)
-                setIsSuperAdmin(false)
                 navigate("/login")
                 return
             }
@@ -38,12 +34,6 @@ function AuthWrapper({ children }) {
             }) 
 
             localStorage.setItem("loggedUserInfo", JSON.stringify(response.data))
-
-            if(response.data.role === "admin" || response.data.role === "superAdmin"){
-                setIsAdmin(true)
-            } else if (response.data.role === "superAdmin"){
-                setIsSuperAdmin(true)
-            }
 
             setIsLoggedIn(true)
             setLoggedUserInfo(response.data)
@@ -67,9 +57,7 @@ function AuthWrapper({ children }) {
         isLoggedIn,
         loggedUserInfo,
         setIsLoggedIn,
-        authenticateUser,
-        isAdmin,
-        isSuperAdmin
+        authenticateUser
     }
 
     if (isValidatingUser) {
