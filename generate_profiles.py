@@ -51,7 +51,7 @@ def make_entry():
         "image [String]": f"https://example.com/images/{uuid.uuid4()}.jpg",
         "patientId[array]": [str(uuid.uuid4()) for _ in range(random.randint(1, 3))],
         "metricId[array]": [str(uuid.uuid4()) for _ in range(random.randint(1, 4))],
-        "healthId[aarray]": [str(uuid.uuid4()) for _ in range(random.randint(0, 2))]
+            "healthId[array]": [str(uuid.uuid4()) for _ in range(random.randint(0, 2))]
     }
     return entry
 

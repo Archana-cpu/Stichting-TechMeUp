@@ -1,0 +1,7 @@
+generates_profiles.py
+/generates_profiles.py
+/.gitignoreignore
+__pycache__/    
+*.pyc
+*py
+.env
