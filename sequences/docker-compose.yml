@@ -1,0 +1,76 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: sequences-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sequences
+      POSTGRES_PASSWORD: sequences
+      POSTGRES_DB: sequences
+    volumes:
+      - sequences_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - sequences-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sequences"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    container_name: sequences-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - sequences-network
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://sequences:sequences@db:5432/sequences
+      DIRECT_URL: postgresql://sequences:sequences@db:5432/sequences
+      AUTH_SECRET: ${AUTH_SECRET:-development_secret_change_in_production}
+      AUTH_URL: ${AUTH_URL:-http://localhost:3000}
+      AUTH_GOOGLE_ID: ${AUTH_GOOGLE_ID:-}
+      AUTH_GOOGLE_SECRET: ${AUTH_GOOGLE_SECRET:-}
+      AUTH_TRUST_HOST: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    container_name: sequences-migrate
+    environment:
+      DATABASE_URL: postgresql://sequences:sequences@db:5432/sequences
+      DIRECT_URL: postgresql://sequences:sequences@db:5432/sequences
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["sh", "-c", "pnpm db:push && pnpm db:seed"]
+    networks:
+      - sequences-network
+    profiles:
+      - setup
+
+volumes:
+  sequences_postgres_data:
+    name: sequences_postgres_data
+
+networks:
+  sequences-network:
+    name: sequences-network
+    driver: bridge

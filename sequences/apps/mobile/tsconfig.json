@@ -1,0 +1,20 @@
+{
+  "extends": "@seq/config/tsconfig/expo",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "nativewind-env.d.ts",
+    "env.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

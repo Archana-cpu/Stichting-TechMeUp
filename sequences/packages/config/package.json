@@ -1,0 +1,17 @@
+{
+  "name": "@seq/config",
+  "version": "0.0.1",
+  "exports": {
+    ".": "./src/index.ts",
+    "./themes": "./src/themes.ts",
+    "./fonts": "./src/fonts.ts",
+    "./tailwind": "./src/tailwind.ts",
+    "./design-system": "./src/design-system.ts",
+    "./tsconfig/base": "./tsconfig.base.json",
+    "./tsconfig/next": "./tsconfig.next.json",
+    "./tsconfig/expo": "./tsconfig.expo.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}
