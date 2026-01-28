@@ -1,0 +1,49 @@
+{
+  "name": "@voxpoll/actions",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "VoxPoll Actions Package - Server actions and data fetching utilities",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./auth": {
+      "types": "./src/auth/index.ts",
+      "default": "./src/auth/index.ts"
+    },
+    "./polls": {
+      "types": "./src/polls/index.ts",
+      "default": "./src/polls/index.ts"
+    },
+    "./users": {
+      "types": "./src/users/index.ts",
+      "default": "./src/users/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist .turbo"
+  },
+  "dependencies": {
+    "@voxpoll/database": "workspace:*",
+    "@voxpoll/validators": "workspace:*",
+    "@voxpoll/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.0",
+    "typescript": "^5.7.0"
+  },
+  "peerDependencies": {
+    "next": "^14.0.0 || ^15.0.0"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "name": "voxpoll",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VoxPoll - Democratic Voice Platform",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "dev:api": "pnpm --filter @voxpoll/api dev",
+    "dev:web": "pnpm --filter web dev",
+    "lint": "turbo lint",
+    "lint:fix": "turbo lint -- --fix",
+    "test": "turbo test",
+    "test:unit": "turbo test:unit",
+    "test:e2e": "turbo test:e2e",
+    "test:coverage": "turbo test:coverage",
+    "typecheck": "turbo typecheck",
+    "db:generate": "turbo db:generate",
+    "db:push": "turbo db:push",
+    "db:migrate": "turbo db:migrate",
+    "db:migrate:deploy": "pnpm --filter @voxpoll/database db:migrate:deploy",
+    "db:seed": "pnpm --filter @voxpoll/database db:seed",
+    "db:studio": "pnpm --filter @voxpoll/database db:studio",
+    "db:reset": "pnpm --filter @voxpoll/database db:push -- --force-reset && pnpm db:seed",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "clean": "turbo clean && rm -rf node_modules",
+    "clean:turbo": "rm -rf .turbo && turbo clean",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "docker:reset": "docker compose down -v && docker compose up -d",
+    "dev:mobile": "pnpm --filter mobile start",
+    "prepare": "turbo db:generate"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.0",
+    "prettier-plugin-tailwindcss": "^0.6.0",
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "react": "19.1.0",
+      "react-dom": "19.1.0",
+      "@types/react": "19.1.0",
+      "@types/react-dom": "19.1.0",
+      "@expo/metro-runtime": "6.1.2"
+    },
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@expo/metro-runtime",
+        "expo-modules-autolinking"
+      ],
+      "allowAny": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom",
+        "@expo/metro-runtime"
+      ]
+    }
+  }
+}

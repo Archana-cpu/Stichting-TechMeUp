@@ -1,0 +1,22 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+dist
+.next
+.turbo
+coverage
+
+# Generated files
+*.generated.ts
+packages/database/drizzle
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Other
+.env*
+*.md

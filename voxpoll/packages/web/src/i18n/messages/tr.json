@@ -1,0 +1,410 @@
+{
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Bir hata oluştu",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "create": "Oluştur",
+    "search": "Ara",
+    "filter": "Filtrele",
+    "sort": "Sırala",
+    "noResults": "Sonuç bulunamadı",
+    "retry": "Tekrar Dene",
+    "back": "Geri",
+    "next": "İleri",
+    "submit": "Gönder",
+    "close": "Kapat",
+    "yes": "Evet",
+    "no": "Hayır",
+    "confirm": "Onayla",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı!",
+    "share": "Paylaş",
+    "more": "Daha fazla",
+    "less": "Daha az",
+    "all": "Tümü",
+    "none": "Hiçbiri",
+    "optional": "(Opsiyonel)",
+    "required": "Zorunlu"
+  },
+  "nav": {
+    "home": "Ana Sayfa",
+    "dashboard": "Gösterge Paneli",
+    "polls": "Anketler",
+    "surveys": "Formlar",
+    "tests": "Testler",
+    "analytics": "Analitik",
+    "settings": "Ayarlar",
+    "profile": "Profil",
+    "notifications": "Bildirimler",
+    "help": "Yardım",
+    "logout": "Çıkış Yap"
+  },
+  "auth": {
+    "login": {
+      "title": "Giriş Yap",
+      "subtitle": "Hesabınıza giriş yapın",
+      "email": "E-posta",
+      "password": "Şifre",
+      "submit": "Giriş Yap",
+      "submitting": "Giriş yapılıyor...",
+      "forgotPassword": "Şifremi Unuttum",
+      "noAccount": "Hesabınız yok mu?",
+      "register": "Kayıt Ol",
+      "or": "veya",
+      "continueWithGoogle": "Google ile devam et",
+      "continueWithApple": "Apple ile devam et",
+      "rememberMe": "Beni hatırla"
+    },
+    "register": {
+      "title": "Hesap Oluştur",
+      "subtitle": "Yeni bir hesap oluşturun",
+      "username": "Kullanıcı Adı",
+      "displayName": "Görünen Ad",
+      "email": "E-posta",
+      "password": "Şifre",
+      "confirmPassword": "Şifre Tekrar",
+      "terms": "Kullanım koşullarını kabul ediyorum",
+      "termsLink": "Kullanım Koşulları",
+      "privacyLink": "Gizlilik Politikası",
+      "submit": "Kayıt Ol",
+      "submitting": "Kayıt yapılıyor...",
+      "hasAccount": "Zaten hesabınız var mı?",
+      "login": "Giriş Yap"
+    },
+    "forgotPassword": {
+      "title": "Şifremi Unuttum",
+      "subtitle": "E-posta adresinize şifre sıfırlama bağlantısı göndereceğiz",
+      "email": "E-posta",
+      "submit": "Sıfırlama Bağlantısı Gönder",
+      "submitting": "Gönderiliyor...",
+      "success": "Sıfırlama bağlantısı e-posta adresinize gönderildi",
+      "backToLogin": "Giriş sayfasına dön"
+    },
+    "resetPassword": {
+      "title": "Yeni Şifre Belirle",
+      "subtitle": "Hesabınız için yeni bir şifre oluşturun",
+      "password": "Yeni Şifre",
+      "confirmPassword": "Yeni Şifre Tekrar",
+      "submit": "Şifreyi Değiştir",
+      "submitting": "Değiştiriliyor...",
+      "success": "Şifreniz başarıyla değiştirildi"
+    },
+    "verifyEmail": {
+      "title": "E-posta Doğrulama",
+      "subtitle": "E-posta adresinize gönderilen kodu girin",
+      "code": "Doğrulama Kodu",
+      "submit": "Doğrula",
+      "submitting": "Doğrulanıyor...",
+      "resend": "Kodu tekrar gönder",
+      "resendIn": "{seconds} saniye içinde tekrar gönderebilirsiniz"
+    },
+    "errors": {
+      "invalidCredentials": "E-posta veya şifre hatalı",
+      "emailExists": "Bu e-posta adresi zaten kullanımda",
+      "usernameExists": "Bu kullanıcı adı zaten kullanımda",
+      "weakPassword": "Şifre en az 10 karakter olmalı",
+      "invalidEmail": "Geçersiz e-posta adresi",
+      "invalidCode": "Geçersiz doğrulama kodu",
+      "expiredCode": "Doğrulama kodu süresi dolmuş",
+      "accountBanned": "Hesabınız askıya alınmış",
+      "accountSuspended": "Hesabınız geçici olarak askıya alınmış",
+      "sessionExpired": "Oturumunuz sona erdi, lütfen tekrar giriş yapın"
+    }
+  },
+  "dashboard": {
+    "title": "Gösterge Paneli",
+    "welcome": "Hoş geldin, {name}!",
+    "stats": {
+      "totalPolls": "Toplam Anket",
+      "totalVotes": "Toplam Oy",
+      "activePolls": "Aktif Anketler",
+      "responseRate": "Yanıt Oranı"
+    },
+    "recentActivity": {
+      "title": "Son Aktiviteler",
+      "empty": "Henüz aktivite yok",
+      "voted": "{user} anketinize oy verdi",
+      "created": "Yeni anket oluşturdunuz",
+      "ended": "Anketiniz sona erdi"
+    },
+    "quickActions": {
+      "title": "Hızlı İşlemler",
+      "createPoll": "Anket Oluştur",
+      "createSurvey": "Form Oluştur",
+      "viewAnalytics": "Analitikleri Gör"
+    }
+  },
+  "polls": {
+    "title": "Anketler",
+    "create": "Yeni Anket",
+    "empty": "Henüz anket oluşturmadınız",
+    "emptyDescription": "İlk anketinizi oluşturarak başlayın",
+    "search": "Anket ara...",
+    "filters": {
+      "all": "Tümü",
+      "active": "Aktif",
+      "ended": "Sona Ermiş",
+      "draft": "Taslak",
+      "scheduled": "Planlanmış"
+    },
+    "sort": {
+      "recent": "En Yeni",
+      "popular": "En Popüler",
+      "alphabetical": "Alfabetik"
+    },
+    "card": {
+      "status": {
+        "active": "Aktif",
+        "ended": "Sona Erdi",
+        "draft": "Taslak",
+        "scheduled": "Planlandı"
+      },
+      "votes": "{count, plural, =0 {Henüz oy yok} one {# oy} other {# oy}}",
+      "views": "{count, plural, =0 {Görüntüleme yok} one {# görüntüleme} other {# görüntüleme}}",
+      "endDate": "Bitiş: {date}",
+      "createdAt": "Oluşturulma: {date}"
+    },
+    "form": {
+      "createTitle": "Yeni Anket Oluştur",
+      "editTitle": "Anketi Düzenle",
+      "title": "Anket Başlığı",
+      "titlePlaceholder": "Anketinizin başlığını girin",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Anketiniz hakkında kısa bir açıklama",
+      "options": "Seçenekler",
+      "addOption": "Seçenek Ekle",
+      "removeOption": "Seçeneği Kaldır",
+      "optionPlaceholder": "Seçenek {number}",
+      "minOptions": "En az 2 seçenek gerekli",
+      "maxOptions": "En fazla {max} seçenek ekleyebilirsiniz",
+      "settings": {
+        "title": "Ayarlar",
+        "visibility": "Görünürlük",
+        "visibilityOptions": {
+          "public": "Herkese Açık",
+          "publicDesc": "Herkes görebilir ve oy verebilir",
+          "private": "Özel",
+          "privateDesc": "Sadece bağlantı ile erişilebilir",
+          "unlisted": "Listelenmemiş",
+          "unlistedDesc": "Arama sonuçlarında görünmez"
+        },
+        "allowAnonymous": "Anonim oylamaya izin ver",
+        "allowAnonymousDesc": "Kullanıcılar giriş yapmadan oy verebilir",
+        "showResultsBeforeVoting": "Oy vermeden önce sonuçları göster",
+        "showResultsBeforeVotingDesc": "Kullanıcılar oy vermeden sonuçları görebilir",
+        "multipleChoice": "Çoklu seçim",
+        "multipleChoiceDesc": "Kullanıcılar birden fazla seçenek seçebilir",
+        "endDate": "Bitiş Tarihi",
+        "endDatePlaceholder": "Tarih seçin"
+      },
+      "submit": "Anketi Oluştur",
+      "update": "Anketi Güncelle",
+      "submitting": "Oluşturuluyor...",
+      "updating": "Güncelleniyor..."
+    },
+    "voting": {
+      "submit": "Oyumu Gönder",
+      "submitting": "Gönderiliyor...",
+      "voted": "Oyunuz kaydedildi!",
+      "alreadyVoted": "Bu ankete zaten oy verdiniz",
+      "ended": "Bu anket sona erdi",
+      "loginRequired": "Oy vermek için giriş yapın",
+      "changeVote": "Oyunuzu değiştirmek ister misiniz?"
+    },
+    "results": {
+      "title": "Sonuçlar",
+      "totalVotes": "Toplam {count} oy",
+      "percentage": "%{value}",
+      "noVotes": "Henüz oy verilmedi",
+      "yourVote": "Oyunuz",
+      "liveResults": "Canlı Sonuçlar",
+      "share": "Sonuçları Paylaş"
+    },
+    "actions": {
+      "view": "Görüntüle",
+      "edit": "Düzenle",
+      "delete": "Sil",
+      "share": "Paylaş",
+      "duplicate": "Kopyala",
+      "endNow": "Şimdi Bitir",
+      "analytics": "Analitik"
+    },
+    "delete": {
+      "title": "Anketi Sil",
+      "description": "Bu anketi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+      "confirm": "Evet, Sil",
+      "cancel": "İptal"
+    }
+  },
+  "surveys": {
+    "title": "Formlar",
+    "create": "Yeni Form",
+    "empty": "Henüz form oluşturmadınız",
+    "emptyDescription": "İlk formunuzu oluşturarak başlayın",
+    "questionTypes": {
+      "text": "Metin",
+      "textarea": "Uzun Metin",
+      "number": "Sayı",
+      "email": "E-posta",
+      "phone": "Telefon",
+      "date": "Tarih",
+      "time": "Saat",
+      "select": "Tek Seçim",
+      "multiselect": "Çoklu Seçim",
+      "rating": "Derecelendirme",
+      "scale": "Ölçek",
+      "file": "Dosya Yükleme"
+    }
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "profile": {
+      "title": "Profil",
+      "displayName": "Görünen Ad",
+      "username": "Kullanıcı Adı",
+      "email": "E-posta",
+      "bio": "Hakkımda",
+      "avatar": "Profil Fotoğrafı",
+      "changeAvatar": "Fotoğrafı Değiştir",
+      "removeAvatar": "Fotoğrafı Kaldır",
+      "save": "Profili Kaydet",
+      "saving": "Kaydediliyor..."
+    },
+    "preferences": {
+      "title": "Tercihler",
+      "language": "Dil",
+      "languages": {
+        "tr": "Türkçe",
+        "en": "English"
+      },
+      "theme": "Tema",
+      "themes": {
+        "light": "Açık",
+        "dark": "Koyu",
+        "system": "Sistem"
+      },
+      "notifications": "Bildirimler",
+      "emailNotifications": "E-posta Bildirimleri",
+      "emailNotificationsDesc": "Önemli güncellemeler için e-posta al",
+      "pushNotifications": "Anlık Bildirimler",
+      "pushNotificationsDesc": "Tarayıcı bildirimleri al"
+    },
+    "security": {
+      "title": "Güvenlik",
+      "changePassword": "Şifre Değiştir",
+      "currentPassword": "Mevcut Şifre",
+      "newPassword": "Yeni Şifre",
+      "confirmPassword": "Yeni Şifre Tekrar",
+      "twoFactor": "İki Faktörlü Doğrulama",
+      "twoFactorDesc": "Hesabınızı ek güvenlik katmanı ile koruyun",
+      "enable2FA": "İki Faktörlü Doğrulamayı Etkinleştir",
+      "disable2FA": "İki Faktörlü Doğrulamayı Devre Dışı Bırak",
+      "sessions": "Aktif Oturumlar",
+      "sessionsDesc": "Hesabınıza bağlı tüm cihazları görüntüleyin",
+      "currentSession": "Bu cihaz",
+      "revokeSession": "Oturumu Sonlandır",
+      "revokeAllSessions": "Tüm Oturumları Sonlandır"
+    },
+    "account": {
+      "title": "Hesap",
+      "exportData": "Verilerimi İndir",
+      "exportDataDesc": "Tüm verilerinizi JSON formatında indirin",
+      "deleteAccount": "Hesabı Sil",
+      "deleteAccountDesc": "Hesabınız ve tüm verileriniz kalıcı olarak silinecek",
+      "deleteAccountWarning": "Bu işlem geri alınamaz!"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Sayfa Bulunamadı",
+      "description": "Aradığınız sayfa mevcut değil veya taşınmış olabilir.",
+      "backHome": "Ana Sayfaya Dön"
+    },
+    "500": {
+      "title": "Sunucu Hatası",
+      "description": "Bir şeyler yanlış gitti. Lütfen daha sonra tekrar deneyin.",
+      "retry": "Tekrar Dene"
+    },
+    "network": {
+      "title": "Bağlantı Hatası",
+      "description": "İnternet bağlantınızı kontrol edin."
+    },
+    "unauthorized": {
+      "title": "Yetkisiz Erişim",
+      "description": "Bu sayfayı görüntülemek için giriş yapmanız gerekiyor."
+    },
+    "forbidden": {
+      "title": "Erişim Engellendi",
+      "description": "Bu sayfaya erişim izniniz bulunmuyor."
+    }
+  },
+  "validation": {
+    "required": "Bu alan zorunludur",
+    "email": "Geçerli bir e-posta adresi girin",
+    "minLength": "En az {min} karakter olmalı",
+    "maxLength": "En fazla {max} karakter olabilir",
+    "passwordMatch": "Şifreler eşleşmiyor",
+    "invalidFormat": "Geçersiz format",
+    "invalidUrl": "Geçerli bir URL girin",
+    "invalidPhone": "Geçerli bir telefon numarası girin"
+  },
+  "time": {
+    "justNow": "Az önce",
+    "minutesAgo": "{count} dakika önce",
+    "hoursAgo": "{count} saat önce",
+    "daysAgo": "{count} gün önce",
+    "weeksAgo": "{count} hafta önce",
+    "monthsAgo": "{count} ay önce",
+    "yearsAgo": "{count} yıl önce"
+  },
+  "landing": {
+    "hero": {
+      "title": "Görüşler Şekillendirsin",
+      "subtitle": "Anketler, formlar ve canlı yoklamalar ile kitlenizi dinleyin. Güvenilir veriler toplayın, içgörüler keşfedin.",
+      "cta": "Ücretsiz Başla",
+      "demo": "Demo İzle"
+    },
+    "features": {
+      "title": "Özellikler",
+      "polls": {
+        "title": "Hızlı Anketler",
+        "description": "Saniyeler içinde anket oluşturun ve canlı sonuçları takip edin."
+      },
+      "surveys": {
+        "title": "Detaylı Formlar",
+        "description": "Kapsamlı formlar ile derinlemesine veri toplayın."
+      },
+      "analytics": {
+        "title": "Akıllı Analitik",
+        "description": "Verilerinizi anlamlı içgörülere dönüştürün."
+      },
+      "realtime": {
+        "title": "Canlı Sonuçlar",
+        "description": "Yanıtları gerçek zamanlı olarak izleyin."
+      }
+    },
+    "cta": {
+      "title": "Hemen Başlayın",
+      "description": "Ücretsiz hesap oluşturun ve ilk anketinizi oluşturun.",
+      "button": "Ücretsiz Kayıt Ol"
+    },
+    "footer": {
+      "company": "Şirket",
+      "about": "Hakkımızda",
+      "careers": "Kariyer",
+      "blog": "Blog",
+      "legal": "Yasal",
+      "privacy": "Gizlilik Politikası",
+      "terms": "Kullanım Koşulları",
+      "cookies": "Çerez Politikası",
+      "support": "Destek",
+      "help": "Yardım Merkezi",
+      "contact": "İletişim",
+      "status": "Sistem Durumu",
+      "copyright": "© {year} VoxPoll. Tüm hakları saklıdır."
+    }
+  }
+}

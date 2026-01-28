@@ -1,0 +1,45 @@
+{
+  "name": "@voxpoll/database",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "VoxPoll Database Package - Drizzle ORM Schema & Client",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./client": {
+      "types": "./src/client.ts",
+      "default": "./src/client.ts"
+    },
+    "./schema": {
+      "types": "./src/schema/index.ts",
+      "default": "./src/schema/index.ts"
+    }
+  },
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:migrate": "drizzle-kit migrate",
+    "db:migrate:deploy": "tsx --env-file=../../.env src/migrate.ts",
+    "db:seed": "tsx --env-file=../../.env src/seed.ts",
+    "db:studio": "drizzle-kit studio",
+    "db:check": "drizzle-kit check",
+    "db:drop": "drizzle-kit drop",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+     "@paralleldrive/cuid2": "^2.2.2",
+    "drizzle-orm": "^0.39.0",
+    "postgres": "^3.4.5",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

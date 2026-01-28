@@ -1,0 +1,410 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "noResults": "No results found",
+    "retry": "Try Again",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "share": "Share",
+    "more": "More",
+    "less": "Less",
+    "all": "All",
+    "none": "None",
+    "optional": "(Optional)",
+    "required": "Required"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "polls": "Polls",
+    "surveys": "Surveys",
+    "tests": "Tests",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "profile": "Profile",
+    "notifications": "Notifications",
+    "help": "Help",
+    "logout": "Log Out"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Sign in to your account",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "submitting": "Signing in...",
+      "forgotPassword": "Forgot Password",
+      "noAccount": "Don't have an account?",
+      "register": "Sign Up",
+      "or": "or",
+      "continueWithGoogle": "Continue with Google",
+      "continueWithApple": "Continue with Apple",
+      "rememberMe": "Remember me"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Create a new account",
+      "username": "Username",
+      "displayName": "Display Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "terms": "I agree to the Terms of Service",
+      "termsLink": "Terms of Service",
+      "privacyLink": "Privacy Policy",
+      "submit": "Sign Up",
+      "submitting": "Creating account...",
+      "hasAccount": "Already have an account?",
+      "login": "Sign In"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "subtitle": "We'll send you a password reset link",
+      "email": "Email",
+      "submit": "Send Reset Link",
+      "submitting": "Sending...",
+      "success": "Reset link has been sent to your email",
+      "backToLogin": "Back to sign in"
+    },
+    "resetPassword": {
+      "title": "Set New Password",
+      "subtitle": "Create a new password for your account",
+      "password": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "submit": "Change Password",
+      "submitting": "Changing...",
+      "success": "Your password has been changed successfully"
+    },
+    "verifyEmail": {
+      "title": "Email Verification",
+      "subtitle": "Enter the code sent to your email",
+      "code": "Verification Code",
+      "submit": "Verify",
+      "submitting": "Verifying...",
+      "resend": "Resend code",
+      "resendIn": "You can resend in {seconds} seconds"
+    },
+    "errors": {
+      "invalidCredentials": "Invalid email or password",
+      "emailExists": "This email address is already in use",
+      "usernameExists": "This username is already taken",
+      "weakPassword": "Password must be at least 10 characters",
+      "invalidEmail": "Invalid email address",
+      "invalidCode": "Invalid verification code",
+      "expiredCode": "Verification code has expired",
+      "accountBanned": "Your account has been banned",
+      "accountSuspended": "Your account has been temporarily suspended",
+      "sessionExpired": "Your session has expired, please sign in again"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back, {name}!",
+    "stats": {
+      "totalPolls": "Total Polls",
+      "totalVotes": "Total Votes",
+      "activePolls": "Active Polls",
+      "responseRate": "Response Rate"
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "empty": "No activity yet",
+      "voted": "{user} voted on your poll",
+      "created": "You created a new poll",
+      "ended": "Your poll has ended"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "createPoll": "Create Poll",
+      "createSurvey": "Create Survey",
+      "viewAnalytics": "View Analytics"
+    }
+  },
+  "polls": {
+    "title": "Polls",
+    "create": "New Poll",
+    "empty": "You haven't created any polls yet",
+    "emptyDescription": "Get started by creating your first poll",
+    "search": "Search polls...",
+    "filters": {
+      "all": "All",
+      "active": "Active",
+      "ended": "Ended",
+      "draft": "Draft",
+      "scheduled": "Scheduled"
+    },
+    "sort": {
+      "recent": "Most Recent",
+      "popular": "Most Popular",
+      "alphabetical": "Alphabetical"
+    },
+    "card": {
+      "status": {
+        "active": "Active",
+        "ended": "Ended",
+        "draft": "Draft",
+        "scheduled": "Scheduled"
+      },
+      "votes": "{count, plural, =0 {No votes yet} one {# vote} other {# votes}}",
+      "views": "{count, plural, =0 {No views} one {# view} other {# views}}",
+      "endDate": "Ends: {date}",
+      "createdAt": "Created: {date}"
+    },
+    "form": {
+      "createTitle": "Create New Poll",
+      "editTitle": "Edit Poll",
+      "title": "Poll Title",
+      "titlePlaceholder": "Enter your poll title",
+      "description": "Description",
+      "descriptionPlaceholder": "A brief description of your poll",
+      "options": "Options",
+      "addOption": "Add Option",
+      "removeOption": "Remove Option",
+      "optionPlaceholder": "Option {number}",
+      "minOptions": "At least 2 options required",
+      "maxOptions": "Maximum {max} options allowed",
+      "settings": {
+        "title": "Settings",
+        "visibility": "Visibility",
+        "visibilityOptions": {
+          "public": "Public",
+          "publicDesc": "Anyone can view and vote",
+          "private": "Private",
+          "privateDesc": "Only accessible via link",
+          "unlisted": "Unlisted",
+          "unlistedDesc": "Hidden from search results"
+        },
+        "allowAnonymous": "Allow anonymous voting",
+        "allowAnonymousDesc": "Users can vote without signing in",
+        "showResultsBeforeVoting": "Show results before voting",
+        "showResultsBeforeVotingDesc": "Users can see results before voting",
+        "multipleChoice": "Multiple choice",
+        "multipleChoiceDesc": "Users can select multiple options",
+        "endDate": "End Date",
+        "endDatePlaceholder": "Select date"
+      },
+      "submit": "Create Poll",
+      "update": "Update Poll",
+      "submitting": "Creating...",
+      "updating": "Updating..."
+    },
+    "voting": {
+      "submit": "Submit Vote",
+      "submitting": "Submitting...",
+      "voted": "Your vote has been recorded!",
+      "alreadyVoted": "You have already voted on this poll",
+      "ended": "This poll has ended",
+      "loginRequired": "Sign in to vote",
+      "changeVote": "Would you like to change your vote?"
+    },
+    "results": {
+      "title": "Results",
+      "totalVotes": "Total {count} votes",
+      "percentage": "{value}%",
+      "noVotes": "No votes yet",
+      "yourVote": "Your vote",
+      "liveResults": "Live Results",
+      "share": "Share Results"
+    },
+    "actions": {
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete",
+      "share": "Share",
+      "duplicate": "Duplicate",
+      "endNow": "End Now",
+      "analytics": "Analytics"
+    },
+    "delete": {
+      "title": "Delete Poll",
+      "description": "Are you sure you want to delete this poll? This action cannot be undone.",
+      "confirm": "Yes, Delete",
+      "cancel": "Cancel"
+    }
+  },
+  "surveys": {
+    "title": "Surveys",
+    "create": "New Survey",
+    "empty": "You haven't created any surveys yet",
+    "emptyDescription": "Get started by creating your first survey",
+    "questionTypes": {
+      "text": "Text",
+      "textarea": "Long Text",
+      "number": "Number",
+      "email": "Email",
+      "phone": "Phone",
+      "date": "Date",
+      "time": "Time",
+      "select": "Single Select",
+      "multiselect": "Multi Select",
+      "rating": "Rating",
+      "scale": "Scale",
+      "file": "File Upload"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "profile": {
+      "title": "Profile",
+      "displayName": "Display Name",
+      "username": "Username",
+      "email": "Email",
+      "bio": "Bio",
+      "avatar": "Profile Picture",
+      "changeAvatar": "Change Picture",
+      "removeAvatar": "Remove Picture",
+      "save": "Save Profile",
+      "saving": "Saving..."
+    },
+    "preferences": {
+      "title": "Preferences",
+      "language": "Language",
+      "languages": {
+        "tr": "Türkçe",
+        "en": "English"
+      },
+      "theme": "Theme",
+      "themes": {
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+      },
+      "notifications": "Notifications",
+      "emailNotifications": "Email Notifications",
+      "emailNotificationsDesc": "Receive emails for important updates",
+      "pushNotifications": "Push Notifications",
+      "pushNotificationsDesc": "Receive browser notifications"
+    },
+    "security": {
+      "title": "Security",
+      "changePassword": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "twoFactor": "Two-Factor Authentication",
+      "twoFactorDesc": "Add an extra layer of security to your account",
+      "enable2FA": "Enable Two-Factor Authentication",
+      "disable2FA": "Disable Two-Factor Authentication",
+      "sessions": "Active Sessions",
+      "sessionsDesc": "View all devices connected to your account",
+      "currentSession": "This device",
+      "revokeSession": "End Session",
+      "revokeAllSessions": "End All Sessions"
+    },
+    "account": {
+      "title": "Account",
+      "exportData": "Export My Data",
+      "exportDataDesc": "Download all your data in JSON format",
+      "deleteAccount": "Delete Account",
+      "deleteAccountDesc": "Your account and all data will be permanently deleted",
+      "deleteAccountWarning": "This action cannot be undone!"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Page Not Found",
+      "description": "The page you're looking for doesn't exist or has been moved.",
+      "backHome": "Go to Home"
+    },
+    "500": {
+      "title": "Server Error",
+      "description": "Something went wrong. Please try again later.",
+      "retry": "Try Again"
+    },
+    "network": {
+      "title": "Connection Error",
+      "description": "Please check your internet connection."
+    },
+    "unauthorized": {
+      "title": "Unauthorized",
+      "description": "You need to sign in to view this page."
+    },
+    "forbidden": {
+      "title": "Access Denied",
+      "description": "You don't have permission to access this page."
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Enter a valid email address",
+    "minLength": "Must be at least {min} characters",
+    "maxLength": "Must be at most {max} characters",
+    "passwordMatch": "Passwords do not match",
+    "invalidFormat": "Invalid format",
+    "invalidUrl": "Enter a valid URL",
+    "invalidPhone": "Enter a valid phone number"
+  },
+  "time": {
+    "justNow": "Just now",
+    "minutesAgo": "{count} minutes ago",
+    "hoursAgo": "{count} hours ago",
+    "daysAgo": "{count} days ago",
+    "weeksAgo": "{count} weeks ago",
+    "monthsAgo": "{count} months ago",
+    "yearsAgo": "{count} years ago"
+  },
+  "landing": {
+    "hero": {
+      "title": "Let Voices Shape Decisions",
+      "subtitle": "Listen to your audience with polls, surveys, and live voting. Collect reliable data, discover insights.",
+      "cta": "Get Started Free",
+      "demo": "Watch Demo"
+    },
+    "features": {
+      "title": "Features",
+      "polls": {
+        "title": "Quick Polls",
+        "description": "Create polls in seconds and track live results."
+      },
+      "surveys": {
+        "title": "Detailed Surveys",
+        "description": "Collect in-depth data with comprehensive surveys."
+      },
+      "analytics": {
+        "title": "Smart Analytics",
+        "description": "Turn your data into meaningful insights."
+      },
+      "realtime": {
+        "title": "Real-Time Results",
+        "description": "Watch responses come in as they happen."
+      }
+    },
+    "cta": {
+      "title": "Get Started Today",
+      "description": "Create a free account and build your first poll.",
+      "button": "Sign Up Free"
+    },
+    "footer": {
+      "company": "Company",
+      "about": "About Us",
+      "careers": "Careers",
+      "blog": "Blog",
+      "legal": "Legal",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "cookies": "Cookie Policy",
+      "support": "Support",
+      "help": "Help Center",
+      "contact": "Contact",
+      "status": "System Status",
+      "copyright": "© {year} VoxPoll. All rights reserved."
+    }
+  }
+}

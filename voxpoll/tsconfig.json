@@ -1,0 +1,38 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@voxpoll/database": ["packages/database/src"],
+      "@voxpoll/database/*": ["packages/database/src/*"],
+      "@voxpoll/api": ["packages/api/src"],
+      "@voxpoll/api/*": ["packages/api/src/*"],
+      "@voxpoll/shared": ["packages/shared/src"],
+      "@voxpoll/shared/*": ["packages/shared/src/*"],
+      "@voxpoll/validators": ["packages/validators/src"],
+      "@voxpoll/validators/*": ["packages/validators/src/*"],
+      "@voxpoll/ui": ["packages/ui/src"],
+      "@voxpoll/ui/*": ["packages/ui/src/*"],
+      "@voxpoll/algorithms": ["packages/algorithms/src"],
+      "@voxpoll/algorithms/*": ["packages/algorithms/src/*"],
+      "@voxpoll/config": ["packages/config/src"],
+      "@voxpoll/config/*": ["packages/config/src/*"],
+      "@voxpoll/actions": ["packages/actions/src"],
+      "@voxpoll/actions/*": ["packages/actions/src/*"],
+      "@voxpoll/web": ["packages/web/src"],
+      "@voxpoll/web/*": ["packages/web/src/*"]
+    }
+  },
+  "files": [],
+  "references": [
+    { "path": "packages/shared" },
+    { "path": "packages/validators" },
+    { "path": "packages/ui" },
+    { "path": "packages/algorithms" },
+    { "path": "packages/config" },
+    { "path": "packages/database" },
+    { "path": "packages/actions" },
+    { "path": "packages/api" },
+    { "path": "packages/web" }
+  ]
+}

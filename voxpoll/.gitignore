@@ -1,0 +1,79 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# VOXPOLL - GITIGNORE
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+.turbo/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Drizzle
+packages/database/drizzle/meta
+
+# Generated
+*.generated.ts
+*.generated.js
+
+# Sentry
+.sentryclirc
+
+# Vercel
+.vercel/
+
+# Mobile
+apps/mobile/.expo/
+apps/mobile/ios/
+apps/mobile/android/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# Debug
+.clinic/
+.trace/
+
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini

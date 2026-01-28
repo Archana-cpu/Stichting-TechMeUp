@@ -1,0 +1,39 @@
+{
+  "name": "@voxpoll/algorithms",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "VoxPoll Algorithms Package - Voting algorithms, scoring, and statistical calculations",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./voting": {
+      "types": "./src/voting/index.ts",
+      "default": "./src/voting/index.ts"
+    },
+    "./scoring": {
+      "types": "./src/scoring/index.ts",
+      "default": "./src/scoring/index.ts"
+    },
+    "./statistics": {
+      "types": "./src/statistics/index.ts",
+      "default": "./src/statistics/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rimraf dist .turbo"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.0",
+    "typescript": "^5.7.0",
+    "vitest": "^4.0.18"
+  }
+}

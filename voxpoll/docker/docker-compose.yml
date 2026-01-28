@@ -1,0 +1,118 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# VOXPOLL - LOCAL DEVELOPMENT DOCKER COMPOSE
+# ══════════════════════════════════════════════════════════════════════════════
+
+services:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # PostgreSQL Database
+  # ─────────────────────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: voxpoll
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-voxpoll}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-voxpoll_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-voxpoll}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-voxpoll} -d ${POSTGRES_DB:-voxpoll}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Redis Cache
+  # ─────────────────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: voxpoll-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Meilisearch (Search Engine - Phase 2)
+  # ─────────────────────────────────────────────────────────────────────────────
+  meilisearch:
+    image: getmeili/meilisearch:v1.6
+    container_name: voxpoll-meilisearch
+    restart: unless-stopped
+    environment:
+      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:-voxpoll_meili_dev_key}
+      MEILI_ENV: development
+      MEILI_NO_ANALYTICS: true
+    ports:
+      - "${MEILI_PORT:-7700}:7700"
+    volumes:
+      - meilisearch_data:/meili_data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - search
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # MinIO (S3-compatible storage for local dev)
+  # ─────────────────────────────────────────────────────────────────────────────
+  minio:
+    image: minio/minio:latest
+    container_name: voxpoll-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-voxpoll}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-voxpoll_minio_dev}
+    ports:
+      - "${MINIO_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - storage
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # MailHog (Email testing)
+  # ─────────────────────────────────────────────────────────────────────────────
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: voxpoll-mailhog
+    restart: unless-stopped
+    ports:
+      - "${MAILHOG_SMTP_PORT:-1025}:1025"
+      - "${MAILHOG_UI_PORT:-8025}:8025"
+    profiles:
+      - email
+
+volumes:
+  postgres_data:
+    name: voxpoll_postgres_data
+  redis_data:
+    name: voxpoll_redis_data
+  meilisearch_data:
+    name: voxpoll_meilisearch_data
+  minio_data:
+    name: voxpoll_minio_data
+
+networks:
+  default:
+    name: voxpoll_network
