@@ -123,14 +123,16 @@ export const RATE_LIMITS = {
   register: { limit: 3, window: 3600, prefix: 'rl:auth:register' },   // 3 per hour
   passwordReset: { limit: 3, window: 3600, prefix: 'rl:auth:reset' }, // 3 per hour
   oauth: { limit: 10, window: 900, prefix: 'rl:auth:oauth' },         // 10 per 15min
+  otpVerify: { limit: 3, window: 600, prefix: 'rl:auth:otp-verify' }, // 3 per 10min (P-058)
 
   // Content creation (moderate) - Base limits, overridden by tier
   createPoll: { limit: 10, window: 3600, prefix: 'rl:poll:create' },  // 10 per hour
   createSurvey: { limit: 5, window: 3600, prefix: 'rl:survey:create' }, // 5 per hour
   createTest: { limit: 3, window: 3600, prefix: 'rl:test:create' },   // 3 per hour
   vote: { limit: 30, window: 3600, prefix: 'rl:vote' },               // 30 per hour (reduced from 100)
-  votePerPoll: { limit: 1, window: 60, prefix: 'rl:vote:poll' },      // 1 per poll per minute (prevents rapid voting)
+  votePerPoll: { limit: 1, window: 31536000, prefix: 'rl:vote:poll' }, // 1 per poll forever (P-058: 1 year = effectively permanent)
   comment: { limit: 20, window: 3600, prefix: 'rl:comment' },         // 20 per hour
+  pretestSubmit: { limit: 3, window: 86400, prefix: 'rl:pretest:submit' }, // 3 per 24h (P-058)
 
   // Live poll operations
   livePollCreate: { limit: 5, window: 3600, prefix: 'rl:live:create' }, // 5 per hour
@@ -222,7 +224,7 @@ export function rateLimit(config: RateLimitConfig) {
         c.header('Retry-After', retryAfter.toString())
 
         throw ApiError.tooManyRequests(
-          `Rate limit exceeded. Try again in ${retryAfter} seconds.`
+          'Rate limit exceeded. Please try again later.'
         )
       }
 

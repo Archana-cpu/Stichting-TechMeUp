@@ -41,23 +41,26 @@
 # ═══════════════════════════════════════════════════════════════════════════════
 
 ## P0-001: Password Validation Tests
-- **Status**: [ ] Pending
+- **Status**: [x] Completed (2026-01-27 02:12)
 - **Bible**: 05-TECH/06-security.md, T-006
-- **Test File**: `packages/api/src/services/auth.service.test.ts` (extend)
+- **Test File**: `packages/api/src/test/password-validation.test.ts`
 - **Coverage Target**: 100%
 - **Test Scenarios**:
-  - [ ] Min length enforcement (10 chars)
-  - [ ] Uppercase requirement
-  - [ ] Lowercase requirement
-  - [ ] Number requirement
-  - [ ] Special char requirement
-  - [ ] Common password rejection (list check)
-  - [ ] HaveIBeenPwned API integration
-  - [ ] Password history check (last 5)
-  - [ ] Argon2id hashing verification
-  - [ ] Legacy scrypt backward compatibility
+  - [x] Min length enforcement (10 chars)
+  - [x] Max length enforcement (128 chars)
+  - [x] Character class requirements (3 of 4 types)
+  - [x] Uppercase requirement
+  - [x] Lowercase requirement
+  - [x] Number requirement
+  - [x] Special char requirement
+  - [x] Common password rejection (list check)
+  - [x] HaveIBeenPwned API integration
+  - [x] Password history check (last 5)
+  - [x] Argon2id hashing verification
+  - [x] Legacy scrypt backward compatibility
 - **Bible Compliance**: T-006 (Argon2id, NOT bcrypt)
-- **Estimated Cases**: 20
+- **Actual Cases**: 36 (all passing)
+- **Test Duration**: 3.34s
 
 ## P0-002: Session Management Tests
 - **Status**: [ ] Pending

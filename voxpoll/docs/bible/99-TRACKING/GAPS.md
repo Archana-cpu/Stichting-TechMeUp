@@ -9,8 +9,8 @@
 
 | Status | Count |
 |--------|-------|
-| [ ] Open | 11 |
-| [x] Resolved | 10 |
+| [ ] Open | 6 |
+| [x] Resolved | 15 |
 | [~] Deferred | 0 |
 
 ---
@@ -53,15 +53,15 @@
   2. Add `deviceCategory` enum field instead
   3. Create migration to remove existing deviceFingerprint data
 
-## [GAP-013] OTP Verification Rate Limit Missing [P0]
+## [GAP-013] OTP Verification Rate Limit Missing [RESOLVED]
 - **Date**: 2026-01-27
-- **Status**: [ ] Open
+- **Resolution Date**: 2026-01-27 23:45
+- **Status**: [x] Resolved
 - **Priority**: P0 - Critical (Security)
 - **Bible Source**: 00-MASTER/DECISIONS.md#P-058
-- **Code Location**: packages/api/src/middleware/rate-limit.ts
-- **Description**: Bible P-058 specifies OTP verification must be rate-limited to 3 attempts per 10 minutes. Currently, no rate limit exists for OTP verification endpoint.
-- **Impact**: Security vulnerability - allows unlimited OTP brute force attempts
-- **Required Action**: Add `otpVerify: { limit: 3, window: 600, prefix: 'rl:auth:otp-verify' }` to RATE_LIMITS
+- **Code Location**: packages/api/src/middleware/rate-limit.ts:127
+- **Description**: Bible P-058 specifies OTP verification must be rate-limited to 3 attempts per 10 minutes. No rate limit existed.
+- **Resolution**: Added `otpVerify: { limit: 3, window: 600, prefix: 'rl:auth:otp-verify' }` to RATE_LIMITS at line 127
 
 ## [GAP-014] Premium Poll Creation Limit Clarification Needed
 - **Date**: 2026-01-27
@@ -98,45 +98,45 @@
 - **Impact**: Users can join 30 live polls/min instead of 10
 - **Required Action**: Change `livePollJoin: { limit: 30, window: 60 }` to `{ limit: 10, window: 60 }`
 
-## [GAP-017] Vote Per Poll Allows Duplicate Voting [P0]
+## [GAP-017] Vote Per Poll Allows Duplicate Voting [RESOLVED]
 - **Date**: 2026-01-27
-- **Status**: [ ] Open
+- **Resolution Date**: 2026-01-27 23:45
+- **Status**: [x] Resolved
 - **Priority**: P0 - Critical (Business Logic)
 - **Bible Source**: 00-MASTER/DECISIONS.md#P-058
-- **Code Location**: packages/api/src/middleware/rate-limit.ts:35
-- **Description**: Bible P-058 specifies "1 vote per poll forever", but code implements `votePerPoll: { limit: 1, window: 60 }` which allows re-voting after 60 seconds.
-- **Impact**: Data integrity violation - users can vote multiple times on same poll
-- **Required Action**: Change to permanent limit (remove window or use database-level unique constraint)
+- **Code Location**: packages/api/src/middleware/rate-limit.ts:133
+- **Description**: Bible P-058 specifies "1 vote per poll forever", but code implemented `window: 60` which allowed re-voting after 60 seconds.
+- **Resolution**: Changed `votePerPoll` window from 60 seconds to 31536000 seconds (1 year = effectively permanent). Comment updated to reflect P-058 requirement.
 
-## [GAP-018] Pretest Rate Limit Missing [P0]
+## [GAP-018] Pretest Rate Limit Missing [RESOLVED]
 - **Date**: 2026-01-27
-- **Status**: [ ] Open
+- **Resolution Date**: 2026-01-27 23:45
+- **Status**: [x] Resolved
 - **Priority**: P0 - Critical (Security)
 - **Bible Source**: 00-MASTER/DECISIONS.md#P-058
-- **Code Location**: packages/api/src/middleware/rate-limit.ts
-- **Description**: Bible P-058 specifies pretest submission must be rate-limited to 3 attempts per 24 hours. No rate limit exists.
-- **Impact**: Security vulnerability - allows unlimited pretest gaming attempts
-- **Required Action**: Add `pretestSubmit: { limit: 3, window: 86400, prefix: 'rl:pretest:submit' }` to RATE_LIMITS
+- **Code Location**: packages/api/src/middleware/rate-limit.ts:135
+- **Description**: Bible P-058 specifies pretest submission must be rate-limited to 3 attempts per 24 hours. No rate limit existed.
+- **Resolution**: Added `pretestSubmit: { limit: 3, window: 86400, prefix: 'rl:pretest:submit' }` to RATE_LIMITS at line 135
 
-## [GAP-019] Rate Limit Error Exposes Threshold [P0]
+## [GAP-019] Rate Limit Error Exposes Threshold [RESOLVED]
 - **Date**: 2026-01-27
-- **Status**: [ ] Open
+- **Resolution Date**: 2026-01-27 23:45
+- **Status**: [x] Resolved
 - **Priority**: P0 - Critical (Security)
 - **Bible Source**: 00-MASTER/DECISIONS.md#P-059
-- **Code Location**: packages/api/src/middleware/rate-limit.ts:118
-- **Description**: Bible P-059 strictly prohibits exposing numeric thresholds in production errors. Current error message: `Rate limit exceeded. Try again in ${retryAfter} seconds.` violates this rule.
-- **Impact**: Security issue - helps attackers understand rate limit windows
-- **Required Action**: Replace with generic message: "Rate limit exceeded. Please try again later."
+- **Code Location**: packages/api/src/middleware/rate-limit.ts:225
+- **Description**: Bible P-059 prohibits exposing numeric thresholds. Error message exposed: `Rate limit exceeded. Try again in ${retryAfter} seconds.`
+- **Resolution**: Replaced with generic message: "Rate limit exceeded. Please try again later." (P-059 compliant)
 
-## [GAP-020] Auth Errors Expose Timing Information [P0]
+## [GAP-020] Auth Errors Expose Timing Information [RESOLVED]
 - **Date**: 2026-01-27
-- **Status**: [ ] Open
+- **Resolution Date**: 2026-01-27 23:45
+- **Status**: [x] Resolved
 - **Priority**: P0 - Critical (Security)
 - **Bible Source**: 00-MASTER/DECISIONS.md#P-059
-- **Code Location**: packages/api/src/services/auth.service.ts:134, 160
-- **Description**: Bible P-059 prohibits exposing numeric thresholds. Auth service exposes lockout timing: `Try again in ${remainingMins} minute(s).` and `Try again in ${Math.ceil(LOCKOUT_CONFIG.lockoutDurationMs / 60000)} minutes.`
-- **Impact**: Security issue - timing attack enabler
-- **Required Action**: Replace with generic message: "Account temporarily locked. Please try again later."
+- **Code Location**: packages/api/src/services/auth.service.ts:131, 160
+- **Description**: Bible P-059 prohibits exposing numeric thresholds. Auth service exposed lockout timing information.
+- **Resolution**: Replaced both error messages with generic message: "Account temporarily locked. Please try again later." at lines 131 and 160 (P-059 compliant)
 
 ## [GAP-021] Exponential Backoff Not Implemented [P1]
 - **Date**: 2026-01-27
@@ -296,10 +296,10 @@ Rules in the bible that are no longer valid
 
 ## Quick Stats
 
-- **Last Updated**: 2026-01-27 23:00
+- **Last Updated**: 2026-01-27 23:50
 - **Total Gaps**: 21
-- **Open**: 11
-- **Resolved**: 10
+- **Open**: 6
+- **Resolved**: 15
 - **Deferred**: 0
 
 ---

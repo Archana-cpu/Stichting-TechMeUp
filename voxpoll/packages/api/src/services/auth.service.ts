@@ -128,10 +128,8 @@ class AuthServiceClass {
 
     // SECURITY: Check if account is locked
     if (user.lockedUntil && user.lockedUntil > new Date()) {
-      const remainingMs = user.lockedUntil.getTime() - Date.now()
-      const remainingMins = Math.ceil(remainingMs / 60000)
       throw ApiError.tooManyRequests(
-        `Account is temporarily locked. Try again in ${remainingMins} minute${remainingMins > 1 ? 's' : ''}.`
+        'Account temporarily locked. Please try again later.'
       )
     }
 
@@ -157,7 +155,7 @@ class AuthServiceClass {
       if (shouldLock) {
         console.warn(`[SECURITY] Account locked after ${newAttempts} failed attempts: ${user.email}`)
         throw ApiError.tooManyRequests(
-          `Account locked due to too many failed attempts. Try again in ${Math.ceil(LOCKOUT_CONFIG.lockoutDurationMs / 60000)} minutes.`
+          'Account temporarily locked. Please try again later.'
         )
       }
 
