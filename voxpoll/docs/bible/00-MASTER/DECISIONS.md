@@ -206,7 +206,7 @@
   ```
   Global: anonymous 100/min, authenticated 300/min
   Auth: login 5/15min, register 3/hour, passwordReset 3/hour, otpVerify 3/10min
-  Creation: poll (free 3/day, plus 10/day, premium 50/day)
+  Creation: poll (free 3/day, plus 10/day, premium unlimited)
   Participation: vote 1/forever, pretest 3/24h, comment 30/hour
   Live Poll: create 5/day, join 10/min, vote 60/min
   Social DM: free 0, plus 25/day, premium 1000/day

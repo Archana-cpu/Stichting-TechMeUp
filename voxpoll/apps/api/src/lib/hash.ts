@@ -80,6 +80,37 @@ export function generateParticipantHash(userId: string, contentId: string): stri
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Generate Fraud Detection Hash (for FraudDetectionLog)
+// Privacy-preserving: SEPARATE salt from participant hash to prevent correlation
+// [SECURITY: P-057] FraudDetectionLog MUST NOT be linkable to participant data
+// ─────────────────────────────────────────────────────────────────────────────
+
+let _fraudDetectionSalt: string | null = null
+
+function getFraudDetectionSalt(): string {
+  if (_fraudDetectionSalt !== null) return _fraudDetectionSalt
+
+  const salt = process.env['FRAUD_DETECTION_SALT']
+
+  if (!salt) {
+    if (process.env['NODE_ENV'] === 'production') {
+      throw new Error('[SECURITY] FRAUD_DETECTION_SALT must be set in production')
+    }
+    console.warn('[DEV] FRAUD_DETECTION_SALT not set - using development fallback')
+    _fraudDetectionSalt = 'dev-only-fraud-detection-salt-not-for-production'
+  } else {
+    _fraudDetectionSalt = salt
+  }
+
+  return _fraudDetectionSalt
+}
+
+export function generateFraudDetectionHash(deviceFingerprint: string): string {
+  const salt = getFraudDetectionSalt()
+  return sha256(`${salt}:fraud:${deviceFingerprint}`)
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Generate Slug
 // ─────────────────────────────────────────────────────────────────────────────
 

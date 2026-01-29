@@ -287,7 +287,7 @@ export const pretestAttempts = pgTable('pretest_attempts', {
   pollId: text('pollId').notNull().references(() => polls.id, { onDelete: 'cascade' }),
   participantId: text('participantId').notNull().references(() => users.id),
 
-  deviceFingerprint: varchar('deviceFingerprint', { length: 64 }),
+  deviceCategory: deviceCategoryEnum('deviceCategory'),
 
   attemptNumber: integer('attemptNumber').notNull(),
   score: doublePrecision('score').notNull(),

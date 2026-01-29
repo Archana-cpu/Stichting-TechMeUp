@@ -183,7 +183,7 @@ class PretestServiceClass {
   async submitAnswers(
     pollId: string,
     userId: string,
-    deviceFingerprint: string,
+    deviceCategory: 'DESKTOP' | 'MOBILE' | 'TABLET' | 'UNKNOWN' | null,
     answers: PretestAnswer[]
   ): Promise<PretestAttemptResult> {
     const status = await this.getStatus(pollId, userId)
@@ -240,7 +240,7 @@ class PretestServiceClass {
     await db.insert(pretestAttempts).values({
       pollId,
       participantId: userId,
-      deviceFingerprint,
+      deviceCategory,
       attemptNumber,
       score,
       passed,

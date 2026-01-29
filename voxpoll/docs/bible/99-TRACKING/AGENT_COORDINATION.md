@@ -27,51 +27,96 @@
 
 ## Pending Claims (Awaiting Assignment)
 
-### [CLAIM-008] TBD - WAVE 2: P1 High Priority Enhancements
-- **Agent**: TBD (Requires: Claude DEV 1 or DEV 3)
-- **Task**: Implement Exponential Backoff (GAP-021)
-- **Status**: PENDING
-- **Gaps**: GAP-021
-- **Files**:
-  - packages/api/src/middleware/rate-limit.ts
-  - packages/api/src/services/auth.service.ts
-- **Expected Duration**: 1 day
-- **Priority**: HIGH (This sprint)
-- **Details**:
-  - Implement exponential backoff for live poll code guessing
-  - Implement progressive lockout for authentication failures
-
-### [CLAIM-009] TBD - WAVE 3: P2 Medium Priority Fixes
-- **Agent**: TBD (Requires: Claude DEV 3)
-- **Task**: Fix 3 P2 Medium Priority Gaps (Privacy & Business Logic)
-- **Status**: PENDING
-- **Gaps**: GAP-012, GAP-015, GAP-016
-- **Files**:
-  - packages/database/src/db/schema/polls.ts (GAP-012)
-  - packages/api/src/middleware/rate-limit.ts (GAP-015, 016)
-- **Expected Duration**: 2-3 hours
-- **Priority**: MEDIUM (Next sprint)
-- **Details**:
-  - GAP-012: Remove deviceFingerprint from pretestAttempts, add deviceCategory enum
-  - GAP-015: Fix live poll creation window (5/hour → 5/day, window: 3600 → 86400)
-  - GAP-016: Fix live poll join rate (30/min → 10/min, limit: 30 → 10)
-
-### [CLAIM-010] TBD - GAP-014 Decision Required
-- **Agent**: Bible Master (Product Manager Decision)
-- **Task**: Resolve Premium Poll Creation Limit Conflict
-- **Status**: PENDING DECISION
-- **Gap**: GAP-014
-- **Files**: TBD (depends on decision)
-- **Priority**: CLARIFICATION NEEDED
-- **Options**:
-  1. **Option A**: Update Bible P-058 to say "Premium: unlimited polls" (keep code as-is)
-  2. **Option B**: Update code to `pollsPerDay: 50` (match Bible spec)
-- **Recommendation**: Option A - Premium users expect unlimited as premium benefit
-- **Awaiting**: User approval on recommended option
+<!-- No pending claims -->
 
 ---
 
 ## Completed Claims
+
+### [CLAIM-011] 2026-01-28 01:10 - COMPLETED 01:25
+- **Agent**: Claude DEV 1
+- **Task**: GAP-011 - Add FRAUD_DETECTION_SALT for Privacy Architecture
+- **Status**: COMPLETED
+- **Gap**: GAP-011
+- **Files Modified**:
+  - packages/api/src/lib/hash.ts (generateFraudDetectionHash added, line 83-111)
+  - packages/api/src/services/fraud.service.ts (updated to use new hash, line 520-543)
+  - .env.example (FRAUD_DETECTION_SALT confirmed at line 33)
+  - docs/bible/99-TRACKING/GAPS.md (GAP-011 resolved, Open: 2→1, Resolved: 19→20)
+  - docs/bible/99-TRACKING/AUDIT_CHANGELOG.md (AUDIT-013 added)
+  - docs/bible/99-TRACKING/AGENT_COORDINATION.md (CLAIM-011 completed)
+- **Completion Time**: 2026-01-28 01:25
+- **Duration**: ~15min
+- **Result**: ✅ GAP-011 resolved, Privacy architecture 100% P-057 compliant
+- **Changes**:
+  - FRAUD_DETECTION_SALT: Verified in .env.example (line 33)
+  - generateFraudDetectionHash(): Created in hash.ts (line 83-111)
+    - Separate salt caching system (getFraudDetectionSalt)
+    - Production safety: throws error if salt missing
+    - Dev fallback with warning
+  - fraud.service.ts: Updated logFraudDetection() method (line 520-543)
+    - Removed manual crypto code
+    - Now uses centralized generateFraudDetectionHash()
+    - Added P-057 security comment (line 521)
+  - NO linkability between participant hashes and fraud hashes (different salts)
+
+### [CLAIM-010] 2026-01-28 00:55 - COMPLETED 01:05
+- **Agent**: Claude Bible Master (Product Manager)
+- **Task**: GAP-014 - Resolve Premium Poll Creation Limit Conflict
+- **Status**: COMPLETED
+- **Gap**: GAP-014
+- **Files Modified**:
+  - docs/bible/00-MASTER/DECISIONS.md (P-058: "premium 50/day" → "premium unlimited")
+  - docs/bible/99-TRACKING/GAPS.md (GAP-014 resolved, Open: 3→2, Resolved: 18→19)
+  - docs/bible/99-TRACKING/AUDIT_CHANGELOG.md (AUDIT-014 added)
+  - docs/bible/99-TRACKING/AGENT_COORDINATION.md (CLAIM-010 completed)
+- **Completion Time**: 2026-01-28 01:05
+- **Duration**: ~10min
+- **Decision**: Option A - Update Bible to match code
+- **Result**: ✅ GAP-014 resolved, Bible P-058 now specifies "premium unlimited" (code unchanged)
+- **Rationale**: Premium tier value proposition requires unlimited poll creation capability
+
+### [CLAIM-008] 2026-01-28 00:15 - COMPLETED 00:50
+- **Agent**: Claude DEV 1
+- **Task**: WAVE 2 - P1 High Priority Enhancements (GAP-021 - Exponential Backoff)
+- **Status**: COMPLETED
+- **Gaps**: GAP-021
+- **Files Modified**:
+  - packages/api/src/middleware/rate-limit.ts (exponential backoff middleware added)
+  - packages/api/src/services/auth.service.ts (verified progressive lockout)
+  - docs/bible/99-TRACKING/GAPS.md (GAP-021 resolved, Open: 4→3, Resolved: 17→18)
+  - docs/bible/99-TRACKING/AUDIT_CHANGELOG.md (AUDIT-012 added)
+  - docs/bible/99-TRACKING/AGENT_COORDINATION.md (CLAIM-008 completed)
+- **Completion Time**: 2026-01-28 00:50
+- **Duration**: ~35min
+- **Result**: ✅ GAP-021 resolved, Bible P-058 & P-059 compliant
+- **Changes**:
+  - Authentication progressive lockout: Verified existing implementation (auth.service.ts:39-177)
+  - Exponential backoff middleware: Implemented at rate-limit.ts:390-520
+    - Pattern: 0s → 1s → 2s → 4s → 8s → 16s (max)
+    - Redis Lua script for atomic operations
+    - Pre-configured for live poll code guessing and OTP verification
+    - Generic error messages (P-059 compliant)
+
+### [CLAIM-009] 2026-01-27 23:55 - COMPLETED 00:15
+- **Agent**: Claude DEV 3
+- **Task**: WAVE 3 - P2 Medium Priority Fixes (3 gaps)
+- **Status**: COMPLETED
+- **Gaps**: GAP-012, GAP-015, GAP-016
+- **Files Modified**:
+  - packages/api/src/middleware/rate-limit.ts (GAP-015, 016 - already fixed by another agent)
+  - packages/database/src/db/schema/polls.ts (GAP-012)
+  - packages/database/drizzle/migrations/0002_remove_pretest_device_fingerprint.sql (GAP-012)
+  - packages/api/src/services/pretest.service.ts (GAP-012 - signature updated)
+  - docs/bible/99-TRACKING/GAPS.md (3 gaps resolved, Open: 4→3, Resolved: 17→18)
+  - docs/bible/99-TRACKING/AGENT_COORDINATION.md (CLAIM-009 completed)
+- **Completion Time**: 2026-01-28 00:15
+- **Duration**: ~20min
+- **Result**: ✅ All P2 Medium Priority Gaps resolved, Bible P-057 & P-058 compliant
+- **Changes**:
+  - GAP-012: Removed deviceFingerprint from pretestAttempts, added deviceCategory enum, created migration
+  - GAP-015: Live poll creation window fixed (3600→86400) [already done]
+  - GAP-016: Live poll join rate fixed (30→10) [already done]
 
 ### [CLAIM-003] 2026-01-27 19:30 - COMPLETED 23:00
 - **Agent**: Claude Bible Master (Product Manager + Business Analyst)

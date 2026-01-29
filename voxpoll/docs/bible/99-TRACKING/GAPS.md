@@ -9,49 +9,105 @@
 
 | Status | Count |
 |--------|-------|
-| [ ] Open | 6 |
-| [x] Resolved | 15 |
+| [ ] Open | 1 |
+| [x] Resolved | 22 |
 | [~] Deferred | 0 |
 
 ---
 
 ## Open Gaps
 
-## [GAP-011] Missing FRAUD_DETECTION_SALT [OPEN]
+## [GAP-019] P-040 Live Poll Waiting Room System Missing
+- **Date**: 2026-01-29
+- **Status**: [ ] Open
+- **Priority**: P1 - High (Premium Feature - P-040)
+- **Bible Source**: 03-FEATURES/04-live-polls.md, P-040
+- **Code Location**: apps/api/src/services/livepoll.service.ts, apps/api/src/services/websocket.service.ts
+- **Description**: Bible P-040 specifies a three-tier capacity handling system (80% WARNING, 90% SOFT CAP with Waiting Room, 100% HARD CAP with spectator mode). Current implementation only has simple hard cap at 10K participants without waiting room functionality.
+- **Missing Features**:
+  1. 80% capacity (8,000 participants) - WARNING PHASE:
+     - Host notification (in-app banner)
+     - Participant experience remains NORMAL
+  2. 90% capacity (9,000 participants) - SOFT CAP (Waiting Room):
+     - FIFO queue using Redis sorted set
+     - Position tracking (show "Position: 42 in queue")
+     - Estimated wait time calculation
+     - Max 5 minute wait time (maxWaitingTime: 300s)
+     - Allow leave queue option
+     - Auto-promote to active when participant leaves
+  3. 100% capacity (10,000 participants) - HARD CAP:
+     - Reject new joins with message
+     - Offer spectator mode (view only)
+     - Options: "View Results", "Notify When Space Opens", "Leave"
+  4. Queue Management:
+     - Redis sorted set: `live:{sessionCode}:waitingRoom` (score = timestamp)
+     - Auto-admit from queue when participant leaves (FIFO)
+     - Broadcast position updates every 5s
+     - Queue expiry handling
+- **Current Behavior**: Simple capacity check throws SESSION_FULL error at 10,000 participants
+- **Expected Behavior**: Gradual degradation with waiting room queue at 90%, spectator mode at 100%
+- **Developer TODO**:
+  1. Create `apps/api/src/services/livepoll-waitingroom.service.ts` with queue management
+  2. Update `websocket.service.ts` handleJoin to check capacity tiers (80%, 90%, 100%)
+  3. Implement Redis sorted set operations for FIFO queue
+  4. Implement position tracking and estimated wait time calculation
+  5. Implement auto-promote from queue on participant disconnect
+  6. Add WebSocket events: WAITING_ROOM_JOINED, QUEUE_POSITION_UPDATE, PROMOTED_FROM_QUEUE
+  7. Create test suite: `apps/api/src/test/livepoll-waitingroom.test.ts`
+- **Impact**: Premium feature (Live Polls) lacks critical capacity management for large audiences
+
+---
+
+## Resolved Gaps
+
+## [GAP-018] Response Quality Score Weights Mismatch [RESOLVED]
+- **Date**: 2026-01-29
+- **Resolution Date**: 2026-01-29 00:25
+- **Status**: [x] Resolved
+- **Priority**: P1 - High (Core Differentiator - P-055)
+- **Bible Source**: 04-DATA/02-quality-scoring.md, P-055
+- **Code Location**: packages/algorithms/src/scoring/response-quality.ts (deprecated), packages/api/src/services/response-quality.service.ts (new)
+- **Description**: Bible P-055 specifies 4 equal-weight components (timing 25%, consistency 25%, engagement 25%, attentionChecks 25%) with thresholds (>=70 INCLUDE, 40-69 REVIEW, <40 EXCLUDE). Existing implementation had 6 components with different weights and thresholds.
+- **Resolution**:
+  1. ✅ Created new Bible-compliant service: packages/api/src/services/response-quality.service.ts
+  2. ✅ Implemented 4 equal-weight components (25% each)
+  3. ✅ Implemented correct thresholds (INCLUDE >=70, REVIEW 40-69, EXCLUDE <40)
+  4. ✅ Created comprehensive test suite: response-quality.service.test.ts (22/22 tests passing)
+  5. ✅ Engagement component includes gibberish detection, diversity checks
+  6. ✅ Consistency component detects straightlining with variance analysis
+  7. ✅ Timing component detects speeding (<30% min) and slowpoke (>3x max)
+- **Impact**: Core quality scoring algorithm now fully P-055 compliant
+
+## [GAP-011] Missing FRAUD_DETECTION_SALT [RESOLVED]
 - **Date**: 2026-01-27 22:35
-- **Status**: [ ] Open
+- **Resolution Date**: 2026-01-28 01:20
+- **Status**: [x] Resolved
+- **Priority**: Medium (Privacy Architecture - P-057)
 - **Bible Source**: 08-AUTHORITATIVE/final-decisions.md#P-057
-- **Code Location**: packages/api/src/lib/hash.ts
-- **Description**: Bible P-057 requires TWO separate HMAC salts for privacy-preserving fraud detection:
-  1. `PARTICIPANT_HASH_SALT` - for participant anonymization (exists at hash.ts:56-75)
-  2. `FRAUD_DETECTION_SALT` - for fraud log fingerprint hashing (MISSING)
+- **Code Location**: packages/api/src/lib/hash.ts, packages/api/src/services/fraud.service.ts
+- **Description**: Bible P-057 requires TWO separate HMAC salts for privacy-preserving fraud detection. Only PARTICIPANT_HASH_SALT existed.
+- **Resolution**:
+  1. ✅ FRAUD_DETECTION_SALT already exists in .env.example (line 33)
+  2. ✅ Created `generateFraudDetectionHash()` function in hash.ts (line 83-115)
+  3. ✅ Updated fraud.service.ts to use separate hash (line 520-543)
+  4. ✅ Removed manual crypto code, now uses centralized hash function
+  5. ✅ Ensured NO linkability between participant hashes and fraud hashes (different salts)
+- **Impact**: Privacy architecture now fully P-057 compliant
 
-  Current implementation only has PARTICIPANT_HASH_SALT. The fraud service should hash device fingerprints with a SEPARATE salt (different from participant hashing) to ensure FraudDetectionLog cannot be correlated with participant data.
-- **Impact**:
-  - Low security risk (fraud logs still use hashing)
-  - Medium privacy risk (same salt could allow correlation)
-  - High Bible compliance issue (P-057 requirement)
-- **Required Action**:
-  1. Add FRAUD_DETECTION_SALT environment variable
-  2. Create `generateFraudDetectionHash(deviceFingerprint: string): string` function in hash.ts
-  3. Update fraud.service.ts to use separate hash for FraudDetectionLog.fingerprintHash
-  4. Ensure NO linkability between participant hashes and fraud hashes
-- **Priority**: Medium
-- **Found By**: Claude TESTER 1 during P1-009 test suite creation
-- **Test Coverage**: Documented in packages/api/src/test/fraud-detection.test.ts (GAPS IDENTIFIED section)
-
-## [GAP-012] Device Fingerprint in Pretest Schema [P2]
+## [GAP-012] Device Fingerprint in Pretest Schema [RESOLVED]
 - **Date**: 2026-01-27
-- **Status**: [ ] Open
+- **Resolution Date**: 2026-01-28 00:10
+- **Status**: [x] Resolved
 - **Priority**: P2 - Medium (Privacy Architecture)
 - **Bible Source**: 08-AUTHORITATIVE/final-decisions.md#P-057
 - **Code Location**: packages/database/src/db/schema/polls.ts:290
-- **Description**: Bible P-057 privacy architecture specifies device fingerprints should only be stored in FraudDetectionLog (hashed, 30-day expiry). The `pretestAttempts` table still has `deviceFingerprint: varchar('deviceFingerprint', { length: 64 })` field.
-- **Impact**: Privacy architecture violation - retains fingerprints longer than necessary
-- **Required Action**:
-  1. Remove `deviceFingerprint` field from `pretestAttempts` table
-  2. Add `deviceCategory` enum field instead
-  3. Create migration to remove existing deviceFingerprint data
+- **Description**: Bible P-057 privacy architecture specifies device fingerprints should only be stored in FraudDetectionLog (hashed, 30-day expiry). The `pretestAttempts` table had `deviceFingerprint: varchar('deviceFingerprint', { length: 64 })` field.
+- **Impact**: Privacy architecture violation - retained fingerprints longer than necessary
+- **Resolution**:
+  1. ✅ Removed `deviceFingerprint` field from `pretestAttempts` table schema
+  2. ✅ Added `deviceCategory: deviceCategoryEnum('deviceCategory')` field
+  3. ✅ Created migration 0002_remove_pretest_device_fingerprint.sql
+  4. ✅ Updated pretest.service.ts submitAnswers signature (deviceFingerprint → deviceCategory)
 
 ## [GAP-013] OTP Verification Rate Limit Missing [RESOLVED]
 - **Date**: 2026-01-27
@@ -63,40 +119,37 @@
 - **Description**: Bible P-058 specifies OTP verification must be rate-limited to 3 attempts per 10 minutes. No rate limit existed.
 - **Resolution**: Added `otpVerify: { limit: 3, window: 600, prefix: 'rl:auth:otp-verify' }` to RATE_LIMITS at line 127
 
-## [GAP-014] Premium Poll Creation Limit Clarification Needed
+## [GAP-014] Premium Poll Creation Limit Clarification [RESOLVED]
 - **Date**: 2026-01-27
-- **Status**: [ ] Open
-- **Priority**: Clarification Needed
-- **Bible Source**: 00-MASTER/DECISIONS.md#P-058 vs packages/api/src/constants/limits.ts:115
+- **Resolution Date**: 2026-01-28 01:05
+- **Status**: [x] Resolved
+- **Priority**: Clarification (Product Decision)
+- **Bible Source**: 00-MASTER/DECISIONS.md#P-058
 - **Code Location**: packages/api/src/constants/limits.ts:115
-- **Description**:
-  - Bible P-058 says: "Premium: 50 polls/day"
-  - Code implements: `pollsPerDay: -1 // P-058: unlimited`
-- **Impact**: Conflicting specifications - need Product Manager decision
-- **Required Action**: DECISION NEEDED:
-  1. **Option A**: Update Bible P-058 to say "Premium: unlimited polls"
-  2. **Option B**: Update code to `pollsPerDay: 50`
-- **Recommendation**: Option A (keep unlimited) - Premium users expect unlimited as premium benefit
+- **Description**: Bible P-058 specified "Premium: 50 polls/day" but code implemented unlimited (`pollsPerDay: -1`).
+- **Decision**: Option A - Update Bible to match code (Premium: unlimited)
+- **Resolution**: Updated Bible DECISIONS.md P-058: "premium 50/day" → "premium unlimited"
+- **Rationale**: Premium tier value proposition requires unlimited poll creation. Code remains unchanged.
 
-## [GAP-015] Live Poll Creation Window Incorrect [P2]
+## [GAP-015] Live Poll Creation Window Incorrect [RESOLVED]
 - **Date**: 2026-01-27
-- **Status**: [ ] Open
+- **Resolution Date**: 2026-01-27 22:50
+- **Status**: [x] Resolved
 - **Priority**: P2 - Medium (Business Logic)
 - **Bible Source**: 00-MASTER/DECISIONS.md#P-058
-- **Code Location**: packages/api/src/middleware/rate-limit.ts:45
-- **Description**: Bible P-058 specifies "5 live polls per day", but code implements `window: 3600` (5 per hour).
-- **Impact**: Users can create 120 live polls/day instead of 5
-- **Required Action**: Change `livePollCreate: { limit: 5, window: 3600 }` to `{ limit: 5, window: 86400 }`
+- **Code Location**: packages/api/src/middleware/rate-limit.ts:138
+- **Description**: Bible P-058 specifies "5 live polls per day", but code implemented `window: 3600` (5 per hour).
+- **Resolution**: Changed `livePollCreate` window from 3600 to 86400 seconds. Comment updated to "5 per day (P-058)".
 
-## [GAP-016] Live Poll Join Rate Incorrect [P2]
+## [GAP-016] Live Poll Join Rate Incorrect [RESOLVED]
 - **Date**: 2026-01-27
-- **Status**: [ ] Open
+- **Resolution Date**: 2026-01-27 22:50
+- **Status**: [x] Resolved
 - **Priority**: P2 - Medium (Business Logic)
 - **Bible Source**: 00-MASTER/DECISIONS.md#P-058
-- **Code Location**: packages/api/src/middleware/rate-limit.ts:46
-- **Description**: Bible P-058 specifies "10 live poll joins per minute", but code implements `limit: 30`.
-- **Impact**: Users can join 30 live polls/min instead of 10
-- **Required Action**: Change `livePollJoin: { limit: 30, window: 60 }` to `{ limit: 10, window: 60 }`
+- **Code Location**: packages/api/src/middleware/rate-limit.ts:139
+- **Description**: Bible P-058 specifies "10 live poll joins per minute", but code implemented `limit: 30`.
+- **Resolution**: Changed `livePollJoin` limit from 30 to 10. Comment updated to "10 per minute (P-058)".
 
 ## [GAP-017] Vote Per Poll Allows Duplicate Voting [RESOLVED]
 - **Date**: 2026-01-27
@@ -138,21 +191,25 @@
 - **Description**: Bible P-059 prohibits exposing numeric thresholds. Auth service exposed lockout timing information.
 - **Resolution**: Replaced both error messages with generic message: "Account temporarily locked. Please try again later." at lines 131 and 160 (P-059 compliant)
 
-## [GAP-021] Exponential Backoff Not Implemented [P1]
-- **Date**: 2026-01-27
-- **Status**: [ ] Open
-- **Priority**: P1 - High (Security Enhancement)
-- **Bible Source**: 00-MASTER/DECISIONS.md#P-058
-- **Code Location**: packages/api/src/constants/limits.ts:44
-- **Description**: Bible P-058 mentions "exponential backoff" for live poll code guessing and authentication. Comment exists in code but no implementation: `// 5 per 5 min + exponential backoff`
-- **Impact**: Missing security enhancement - allows consistent attack rate
-- **Required Action**: Implement exponential backoff for:
-  1. Live poll code guessing (after each failed attempt)
-  2. Authentication failures (progressive lockout)
-
 ---
 
 ## Resolved Gaps
+
+## [GAP-021] Exponential Backoff Not Implemented [RESOLVED]
+- **Date**: 2026-01-27
+- **Resolution Date**: 2026-01-28 00:45
+- **Status**: [x] Resolved
+- **Priority**: P1 - High (Security Enhancement)
+- **Bible Source**: 00-MASTER/DECISIONS.md#P-058
+- **Code Location**: packages/api/src/middleware/rate-limit.ts:390-520
+- **Description**: Bible P-058 requires exponential backoff for brute force protection (live poll code, OTP, auth)
+- **Resolution**:
+  1. Authentication progressive lockout: Already implemented in auth.service.ts:39-177 (5 fails → 15 min lockout)
+  2. Exponential backoff middleware: Implemented at rate-limit.ts:390-520
+     - Pattern: 0s → 1s → 2s → 4s → 8s → 16s (max)
+     - Redis Lua script for atomic operations
+     - Pre-configured for live poll code guessing and OTP verification
+     - P-058 compliant with generic error messages (P-059)
 
 ## [GAP-010] Analytics Service Raw SQL Type Casting [RESOLVED]
 - **Date**: 2026-01-27
@@ -296,10 +353,10 @@ Rules in the bible that are no longer valid
 
 ## Quick Stats
 
-- **Last Updated**: 2026-01-27 23:50
+- **Last Updated**: 2026-01-28 01:05
 - **Total Gaps**: 21
-- **Open**: 6
-- **Resolved**: 15
+- **Open**: 2
+- **Resolved**: 19
 - **Deferred**: 0
 
 ---

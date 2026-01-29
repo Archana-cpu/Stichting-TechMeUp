@@ -9,6 +9,7 @@ import { db, eq } from '@voxpoll/database'
 import { ipReputations, pollResponses, surveyResponses, moderationQueue, fraudDetectionLogs } from '@voxpoll/database'
 import { getRedis } from '../lib/redis'
 import { algorithmService } from './algorithm.service'
+import { generateFraudDetectionHash } from '../lib/hash'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -517,6 +518,7 @@ class FraudServiceClass {
 
   /**
    * Log fraud detection for analytics (privacy-preserving)
+   * [SECURITY: P-057] Uses separate FRAUD_DETECTION_SALT (NOT participant salt)
    */
   private async logFraudDetection(
     responseId: string,
@@ -525,17 +527,9 @@ class FraudServiceClass {
     fraudScore: number,
     riskFactors: string[]
   ): Promise<void> {
-    // Create hash of fingerprint (different salt than participant hash)
-    const crypto = await import('crypto')
     const fingerprintHash = metadata.deviceFingerprint
-      ? crypto
-          .createHmac('sha256', process.env['FRAUD_SALT'] || 'fraud-detection-salt')
-          .update(metadata.deviceFingerprint)
-          .digest('hex')
-      : crypto
-          .createHmac('sha256', process.env['FRAUD_SALT'] || 'fraud-detection-salt')
-          .update(`unknown-${Date.now()}`)
-          .digest('hex')
+      ? generateFraudDetectionHash(metadata.deviceFingerprint)
+      : generateFraudDetectionHash(`unknown-${Date.now()}`)
 
     // Truncate IP to first 3 octets for privacy
     const ipPrefix = metadata.ip

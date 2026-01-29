@@ -1,22 +1,30 @@
 # ═══════════════════════════════════════════════════════════════════════════════
 # VOXPOLL PROJECT BIBLE - MASTER INDEX
 # ═══════════════════════════════════════════════════════════════════════════════
-# Version: 2.0 | Last Updated: January 2026
+# Version: 3.0 (NyoWorks Compliant) | Last Updated: 2026-01-29
 # ═══════════════════════════════════════════════════════════════════════════════
 
 ## Quick Navigation
 
-| Category | Purpose | Key Files |
-|----------|---------|-----------|
-| [01-VISION](#01-vision) | Why we build, mission, principles | executive-summary, product-principles |
-| [02-USERS](#02-users) | Who uses the system, roles, permissions | user-types, org-roles, verification |
-| [03-FEATURES](#03-features) | What we build, feature specs | polls, surveys, tests, live, social |
-| [04-DATA](#04-data) | Data quality, methodology, fraud | quality, reliability, methodology |
-| [05-TECH](#05-tech) | How we build, architecture | database, api, security, devops |
-| [06-UX](#06-ux) | User experience, flows, UI | user-flows, ui-specs, accessibility |
-| [07-EDGE](#07-edge) | Edge cases, business rules | edge-cases, failure-modes, rules |
-| [08-AUTHORITATIVE](#08-authoritative) | Override decisions, final specs | types, critical-fixes, decisions |
-| [99-TRACKING](#99-tracking) | Audit, gaps, status | audit, gaps, status, claude-rules |
+| Category | Purpose | Key Files | Standard |
+|----------|---------|-----------|----------|
+| [01-VISION](#01-vision) | Why: Mission, principles | executive-summary, product-principles | VoxPoll |
+| [02-APPS](#02-apps) | Applications: Web, mobile, desktop | web-app, mobile-app | NyoWorks |
+| [02-USERS](#02-users-voxpoll) | Who: Roles, permissions, verification | user-types, org-roles, verification | VoxPoll |
+| [03-FEATURES](#03-features) | What: Feature specifications | polls, surveys, tests, live, social | VoxPoll |
+| [04-DATA](#04-data) | Data: Quality, methodology, fraud | quality, reliability, methodology | VoxPoll |
+| [05-API](#05-api) | API: Contract, endpoints | api-contract | NyoWorks |
+| [05-TECH](#05-tech-voxpoll) | How: Architecture, database, security | architecture, database, api, security | VoxPoll |
+| [06-UX](#06-ux) | UX: Flows, UI specs | user-flows, ui-specs, accessibility | VoxPoll |
+| [07-TESTING](#07-testing) | Testing: Strategy, plans | test-plan | NyoWorks |
+| [07-EDGE](#07-edge-voxpoll) | Edge: Cases, business rules | edge-cases, failure-modes, rules | VoxPoll |
+| [08-DEPLOYMENT](#08-deployment) | Deployment: Infrastructure, CI/CD | infrastructure | NyoWorks |
+| [08-AUTHORITATIVE](#08-authoritative-voxpoll) | Override: Final decisions | types, critical-fixes, decisions | VoxPoll |
+| [09-SECURITY](#09-security) | Security: RBAC, auth | rbac-matrix | NyoWorks |
+| [10-LOGS](#10-logs) | Logs: Tasks, bugs, research | tasks-active, tasks-completed | NyoWorks |
+| [11-AUDIT](#11-audit) | Audit: Daily activity logs | PM-DATE, DEV-DATE | NyoWorks |
+| [98-BACKLOG](#98-backlog) | Backlog: Future features | future-features | NyoWorks |
+| [99-TRACKING](#99-tracking-voxpoll) | Tracking: Gaps, status | gaps, implementation-status | VoxPoll |
 
 ---
 
@@ -30,7 +38,17 @@
 
 ---
 
-## 02-USERS
+## 02-APPS
+> **Purpose**: Application specifications (NyoWorks)
+
+| File | Content | Standard |
+|------|---------|----------|
+| [01-web-app.md](../02-apps/01-web-app.md) | Next.js 16, React 19.1, Tailwind 4 specs | NyoWorks |
+| [02-mobile-app.md](../02-apps/02-mobile-app.md) | React Native + Expo specs | NyoWorks |
+
+---
+
+## 02-USERS (VoxPoll)
 > **Purpose**: Kullanici tipleri, roller, izinler ve dogrulama seviyeleri
 
 | File | Content | Source |
@@ -72,7 +90,16 @@
 
 ---
 
-## 05-TECH
+## 05-API
+> **Purpose**: API Contract (NyoWorks PHASE A Step 4 - CRITICAL)
+
+| File | Content | Standard |
+|------|---------|----------|
+| [01-api-contract.md](../05-api/01-api-contract.md) | 155 endpoints, auth, rate limits, Bible refs | NyoWorks |
+
+---
+
+## 05-TECH (VoxPoll)
 > **Purpose**: Teknik mimari ve implementasyon detaylari
 
 | File | Content | Source |
@@ -102,7 +129,16 @@
 
 ---
 
-## 07-EDGE
+## 07-TESTING
+> **Purpose**: Test strategy and coverage (NyoWorks)
+
+| File | Content | Standard |
+|------|---------|----------|
+| [01-test-plan.md](../07-testing/01-test-plan.md) | Test pyramid, Bible compliance tests, coverage targets | NyoWorks |
+
+---
+
+## 07-EDGE (VoxPoll)
 > **Purpose**: Edge case'ler, hata modlari ve is kurallari
 
 | File | Content | Source |
@@ -113,7 +149,16 @@
 
 ---
 
-## 08-AUTHORITATIVE
+## 08-DEPLOYMENT
+> **Purpose**: Infrastructure and deployment (NyoWorks)
+
+| File | Content | Standard |
+|------|---------|----------|
+| [01-infrastructure.md](../08-deployment/01-infrastructure.md) | AWS ECS, RDS, Redis, S3, CI/CD pipeline | NyoWorks |
+
+---
+
+## 08-AUTHORITATIVE (VoxPoll)
 > **Purpose**: Override eden son kararlar (bu dosyalar diger tum kaynaklari gecersiz kilar)
 
 | File | Content | Source |
@@ -124,7 +169,48 @@
 
 ---
 
-## 99-TRACKING
+## 09-SECURITY
+> **Purpose**: Security and access control (NyoWorks)
+
+| File | Content | Standard |
+|------|---------|----------|
+| [01-rbac-matrix.md](../09-security/01-rbac-matrix.md) | Role hierarchy, permission matrix, verification levels | NyoWorks |
+
+---
+
+## 10-LOGS
+> **Purpose**: Task management and coordination (NyoWorks)
+
+| File | Content | Standard |
+|------|---------|----------|
+| [tasks-active.md](../10-logs/tasks-active.md) | Active tasks (YAML format) | NyoWorks |
+| [tasks-completed.md](../10-logs/tasks-completed.md) | Completed tasks archive | NyoWorks |
+| [research-findings.md](../10-logs/research-findings.md) | Research outcomes | NyoWorks |
+| [test-failures.md](../10-logs/test-failures.md) | Failed tests tracking | NyoWorks |
+| [bugs-discovered.md](../10-logs/bugs-discovered.md) | Bug reports | NyoWorks |
+
+---
+
+## 11-AUDIT
+> **Purpose**: Daily activity logs per role (NyoWorks)
+
+| File | Content | Standard |
+|------|---------|----------|
+| [PM-2026-01-29.md](../11-audit/PM-2026-01-29.md) | Product Manager daily log (example) | NyoWorks |
+| *[ROLE]-[DATE].md* | Each agent creates daily log in format ROLE-DATE.md | NyoWorks |
+
+---
+
+## 98-BACKLOG
+> **Purpose**: Future features and roadmap (NyoWorks)
+
+| File | Content | Standard |
+|------|---------|----------|
+| [01-future-features.md](../98-backlog/01-future-features.md) | Product roadmap, P1-P4 features | NyoWorks |
+
+---
+
+## 99-TRACKING (VoxPoll)
 > **Purpose**: Dinamik takip dosyalari (duzenlenir, guncellenir)
 
 | File | Content | Purpose |
@@ -139,12 +225,27 @@
 ## Bible Hierarchy (Override Order)
 
 ```
-1. 08-AUTHORITATIVE/*     <- EN YUKSEK ONCELIK (override eder)
-2. 00-MASTER/DECISIONS.md <- Tum P-xxx kararlari
-3. Feature-specific file  <- Ilgili ozellik dosyasi
-4. 99-TRACKING/GAPS.md    <- Bilinen sorunlar/cozumler
+1. 08-AUTHORITATIVE/*     <- EN YUKSEK ONCELIK (override eder - VoxPoll)
+2. 00-MASTER/DECISIONS.md <- Tum P-xxx, T-xxx kararlari
+3. Feature-specific file  <- Ilgili ozellik dosyasi (VoxPoll or NyoWorks)
+4. 99-TRACKING/GAPS.md    <- Bilinen sorunlar/cozumler (VoxPoll)
 5. _archive/*             <- Eski dosyalar (sadece referans)
 ```
+
+## NyoWorks Compliance
+
+**Version**: 3.0 (Hybrid: VoxPoll Domain + NyoWorks Standards)
+**Compliance Date**: 2026-01-29
+**Migration Status**: COMPLETED
+
+**Key Changes:**
+- Added NyoWorks Universal Bible Structure sections (02-apps, 05-api, 07-testing, 08-deployment, 09-security, 10-logs, 11-audit, 98-backlog)
+- Preserved VoxPoll domain-specific sections (07-EDGE, 08-AUTHORITATIVE)
+- Migrated task coordination from AGENT_COORDINATION.md to 10-logs/tasks-active.md (NyoWorks YAML format)
+- Created API Contract (PHASE A Step 4 - CRITICAL)
+- Established role-based audit logs (11-audit/[ROLE]-[DATE].md)
+
+**Compliance Rate**: 100% (all NyoWorks mandatory sections present)
 
 ---
 

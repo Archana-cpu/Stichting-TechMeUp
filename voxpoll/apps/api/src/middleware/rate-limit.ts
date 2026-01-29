@@ -135,9 +135,9 @@ export const RATE_LIMITS = {
   pretestSubmit: { limit: 3, window: 86400, prefix: 'rl:pretest:submit' }, // 3 per 24h (P-058)
 
   // Live poll operations
-  livePollCreate: { limit: 5, window: 3600, prefix: 'rl:live:create' }, // 5 per hour
-  livePollJoin: { limit: 30, window: 60, prefix: 'rl:live:join' },     // 30 per minute
-  livePollVote: { limit: 60, window: 60, prefix: 'rl:live:vote' },     // 60 per minute
+  livePollCreate: { limit: 5, window: 86400, prefix: 'rl:live:create' }, // 5 per day (P-058)
+  livePollJoin: { limit: 10, window: 60, prefix: 'rl:live:join' },      // 10 per minute (P-058)
+  livePollVote: { limit: 60, window: 60, prefix: 'rl:live:vote' },      // 60 per minute
 
   // File uploads
   upload: { limit: 20, window: 3600, prefix: 'rl:upload' },           // 20 per hour
@@ -384,4 +384,165 @@ export function validatePollOptionCount(tier: SubscriptionTier, optionCount: num
 
 export function getMaxPollOptions(tier: SubscriptionTier): number {
   return TIER_LIMITS[tier].maxPollOptions
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Exponential Backoff Lua Script [SECURITY: P-058 Brute Force Protection]
+// ─────────────────────────────────────────────────────────────────────────────
+
+const EXPONENTIAL_BACKOFF_SCRIPT = `
+local key = KEYS[1]
+local now = tonumber(ARGV[1])
+local base_delay = tonumber(ARGV[2])
+local max_delay = tonumber(ARGV[3])
+local reset_window = tonumber(ARGV[4])
+
+-- Get current state
+local state = redis.call('HMGET', key, 'attempts', 'last_attempt_at')
+local attempts = tonumber(state[1]) or 0
+local last_attempt_at = tonumber(state[2]) or 0
+
+-- Reset if outside reset window
+if last_attempt_at > 0 and (now - last_attempt_at) > reset_window then
+  attempts = 0
+end
+
+-- Calculate required delay (exponential: 0, base, base*2, base*4, base*8, max)
+local required_delay = 0
+if attempts > 0 then
+  required_delay = math.min(base_delay * math.pow(2, attempts - 1), max_delay)
+end
+
+-- Check if enough time has passed since last attempt
+local time_since_last = now - last_attempt_at
+local allowed = (last_attempt_at == 0) or (time_since_last >= required_delay)
+
+-- Calculate retry after (ms until next attempt allowed)
+local retry_after_ms = 0
+if not allowed then
+  retry_after_ms = math.ceil(required_delay - time_since_last)
+end
+
+-- If allowed, increment attempts and update timestamp
+if allowed then
+  attempts = attempts + 1
+  redis.call('HMSET', key, 'attempts', attempts, 'last_attempt_at', now)
+  redis.call('EXPIRE', key, math.ceil(reset_window / 1000))
+end
+
+-- Return: allowed (1/0), attempts, retry_after_ms, required_delay
+return {allowed and 1 or 0, attempts, retry_after_ms, required_delay}
+`
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Exponential Backoff Configuration [SECURITY: P-058]
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface ExponentialBackoffConfig {
+  /** Base delay in milliseconds (e.g., 1000 = 1s) */
+  baseDelayMs: number
+  /** Maximum delay in milliseconds (e.g., 16000 = 16s) */
+  maxDelayMs: number
+  /** Time window to reset attempts (e.g., 300000 = 5 min) */
+  resetWindowMs: number
+  /** Key prefix for namespacing */
+  prefix: string
+  /** Get resource ID from context (e.g., live poll code) */
+  getResourceId?: (c: Context<AppEnv>) => string
+  /** Callback when backoff is triggered (for logging failed attempts) */
+  onBackoff?: (c: Context<AppEnv>, attempts: number, retryAfterMs: number) => void
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Exponential Backoff Middleware [SECURITY: P-058 Anti-Brute Force]
+// Use cases: live poll code guessing, OTP verification
+// Pattern: 0s, 1s, 2s, 4s, 8s, 16s (max)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function exponentialBackoff(config: ExponentialBackoffConfig) {
+  return createMiddleware<AppEnv>(async (c, next) => {
+    const userId = c.get('userId')
+    const ip =
+      c.req.header('cf-connecting-ip') ||
+      c.req.header('x-forwarded-for')?.split(',')[0]?.trim() ||
+      c.req.header('x-real-ip') ||
+      'unknown'
+
+    const identifier = userId || ip
+    const resourceId = config.getResourceId?.(c) || ''
+    const key = resourceId
+      ? `${config.prefix}:${identifier}:${resourceId}`
+      : `${config.prefix}:${identifier}`
+
+    const redis = getRedis()
+    const now = Date.now()
+
+    try {
+      const result = (await redis.eval(
+        EXPONENTIAL_BACKOFF_SCRIPT,
+        1,
+        key,
+        now.toString(),
+        config.baseDelayMs.toString(),
+        config.maxDelayMs.toString(),
+        config.resetWindowMs.toString()
+      )) as [number, number, number, number]
+
+      const [allowed, attempts, retryAfterMs, requiredDelay] = result
+
+      if (!allowed) {
+        const retryAfterSec = Math.ceil(retryAfterMs / 1000)
+        c.header('Retry-After', retryAfterSec.toString())
+
+        config.onBackoff?.(c, attempts, retryAfterMs)
+
+        throw ApiError.tooManyRequests(
+          'Too many attempts. Please try again later.'
+        )
+      }
+
+      await next()
+    } catch (err) {
+      if (err instanceof ApiError) {
+        throw err
+      }
+
+      console.error('[ExponentialBackoff] Redis error, allowing request:', err)
+      await next()
+    }
+  })
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Pre-configured Exponential Backoff Limits [SECURITY: P-058]
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const EXPONENTIAL_BACKOFF_LIMITS = {
+  livePollCodeGuessing: (getCode: (c: Context<AppEnv>) => string) =>
+    exponentialBackoff({
+      baseDelayMs: 1000,
+      maxDelayMs: 16000,
+      resetWindowMs: 300000,
+      prefix: 'exp-backoff:live-poll',
+      getResourceId: getCode,
+      onBackoff: (c, attempts, retryAfterMs) => {
+        console.warn(
+          `[SECURITY] Live poll code brute force attempt ${attempts} blocked for ${Math.ceil(retryAfterMs / 1000)}s`
+        )
+      },
+    }),
+
+  otpVerification: () =>
+    exponentialBackoff({
+      baseDelayMs: 1000,
+      maxDelayMs: 16000,
+      resetWindowMs: 600000,
+      prefix: 'exp-backoff:otp',
+      onBackoff: (c, attempts, retryAfterMs) => {
+        const userId = c.get('userId') || 'unknown'
+        console.warn(
+          `[SECURITY] OTP brute force attempt ${attempts} for user ${userId} blocked for ${Math.ceil(retryAfterMs / 1000)}s`
+        )
+      },
+    }),
 }
