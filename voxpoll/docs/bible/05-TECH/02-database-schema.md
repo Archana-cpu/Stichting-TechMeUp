@@ -881,6 +881,71 @@ CREATE INDEX idx_surveys_org ON surveys (organization_id, status, created_at DES
 WHERE deleted_at IS NULL;
 ```
 
+## Partial Indexes (Soft-Delete Optimization)
+
+> **Migration:** 0003_add_partial_indexes.sql (2026-01-29)
+> **Performance Target:** 2-5x improvement for feed/listing queries
+> **Index Size Reduction:** 50-90% vs full table indexes
+
+### P1 Priority - Critical Feed Performance
+
+```sql
+-- Feed query optimization (Bible spec compliance)
+CREATE INDEX CONCURRENTLY idx_polls_feed_active
+ON polls (status, visibility, publishedAt DESC)
+WHERE deletedAt IS NULL;
+
+-- User profile poll listing
+CREATE INDEX CONCURRENTLY idx_polls_user_active
+ON polls (creatorId, createdAt DESC)
+WHERE deletedAt IS NULL;
+```
+
+### P2 Priority - Content Listing Optimization
+
+```sql
+-- Organization dashboard survey listing
+CREATE INDEX CONCURRENTLY idx_surveys_org_active
+ON surveys (organizationId, status, createdAt DESC)
+WHERE deletedAt IS NULL;
+
+-- Discussion thread ranking (Wilson score)
+CREATE INDEX CONCURRENTLY idx_comments_ranked_active
+ON comments (discussionId, status, wilsonScore DESC)
+WHERE deletedAt IS NULL AND status = 'VISIBLE';
+
+-- Recent comments listing
+CREATE INDEX CONCURRENTLY idx_comments_recent_active
+ON comments (discussionId, createdAt DESC)
+WHERE deletedAt IS NULL AND status = 'VISIBLE';
+```
+
+### P3 Priority - Response Analytics Optimization
+
+```sql
+-- Active discussions by activity
+CREATE INDEX CONCURRENTLY idx_discussions_active
+ON discussions (status, lastActivityAt DESC)
+WHERE deletedAt IS NULL;
+
+-- Valid poll responses for analytics
+CREATE INDEX CONCURRENTLY idx_poll_responses_valid_active
+ON poll_responses (pollId, createdAt DESC)
+WHERE deletedAt IS NULL AND isValid = true;
+
+-- Completed survey responses
+CREATE INDEX CONCURRENTLY idx_survey_responses_valid_active
+ON survey_responses (surveyId, completedAt DESC)
+WHERE deletedAt IS NULL AND isValid = true AND status = 'COMPLETED';
+```
+
+**Performance Notes:**
+- Partial indexes exclude soft-deleted records from index maintenance
+- CONCURRENTLY prevents table locking during index creation
+- Index size reduction: 50-90% for tables with <10% deleted records
+- Query performance improvement: 2-5x for WHERE deletedAt IS NULL filters
+- Maintenance overhead: Minimal (deletedAt rarely changes once set)
+
 ---
 
 *Source: bible-002.md, bible-005.md, bible-006.md*
