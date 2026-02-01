@@ -31,8 +31,9 @@ import type {
   fraudDetectionLogs,
   livePollSessions,
   auditLogs,
-  profileVisits,
 } from "./db/schema"
+
+import { profileVisits } from "./db/schema/analytics"
 
 // ────────────────────────────────────────────────────────────────────────────
 // Database Client & Schema
@@ -41,6 +42,8 @@ import type {
 export { db, client } from "./client"
 
 export * from "./db/schema"
+
+export { profileVisits }
 
 // ────────────────────────────────────────────────────────────────────────────
 // Drizzle Operators

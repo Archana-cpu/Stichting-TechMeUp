@@ -1,32 +1,35 @@
 # Test Failures
 
-> NyoWorks Test Failure Tracking
-> Last Updated: 2026-01-29
+> NYOWORKS Task Management System v4.0
+> Project: VoxPoll
+> Project Code: VOX
+> Last Updated: 2026-01-29 18:05:00 UTC
 
 ---
 
 ## Overview
 
-This document tracks test failures that require investigation and bug fixes. Each test failure automatically generates a task in `tasks-active.md`.
+This document tracks test failures that require investigation and bug fixes. Each test failure automatically generates a task in tasks-active.md.
 
 **Workflow:**
-1. Test fails → Log here with full details
-2. Create corresponding TASK-XXX in tasks-active.md
-3. Developer claims task and fixes root cause
-4. Mark failure as RESOLVED with fix reference
+1. Test fails → Log here with `python _tools/nyo.py test-fail log`
+2. CLI creates corresponding TASK-YYYYMMDD-NNN in tasks-active.md
+3. Developer claims task with `python _tools/nyo.py task claim <task-id>`
+4. Developer fixes root cause and marks resolved
+5. Update with resolution details
 
 ---
 
 ## Format
 
 ```markdown
-## [TEST-FAIL-XXX] Test Suite Name - Test Case Name
+## [TESTFAIL-YYYYMMDD-NNN] Test Suite Name - Test Case Name
 
-**Date**: YYYY-MM-DD HH:MM
+**Date**: YYYY-MM-DD HH:MM:SS UTC
 **Priority**: P0/P1/P2/P3
 **Status**: OPEN / INVESTIGATING / RESOLVED
 **Test File**: path/to/test.test.ts:line
-**Related Task**: TASK-XXX
+**Related Task**: TASK-YYYYMMDD-NNN
 
 ### Failure Details
 
@@ -43,21 +46,21 @@ Full stack trace
 
 ### Investigation Notes
 
-- YYYY-MM-DD: Investigation finding 1
-- YYYY-MM-DD: Investigation finding 2
+- YYYY-MM-DD HH:MM UTC: Investigation finding 1
+- YYYY-MM-DD HH:MM UTC: Investigation finding 2
 
 ### Resolution
 
-- **Fixed By**: TASK-XXX
+- **Fixed By**: TASK-YYYYMMDD-NNN
 - **Fix Description**: What was changed
-- **Resolved At**: YYYY-MM-DD HH:MM
+- **Resolved At**: YYYY-MM-DD HH:MM:SS UTC
 ```
 
 ---
 
 ## Active Test Failures
 
-<!-- No active test failures yet -->
+<!-- No active test failures -->
 
 ---
 
@@ -67,4 +70,6 @@ Full stack trace
 
 ---
 
-*Created as part of NyoWorks Bible standardization on 2026-01-29*
+*NYOWORKS Task Management System v4.0 - VoxPoll Project*
+*Use CLI: python _tools/nyo.py test-fail [log|list]*
+*Last migrated: 2026-01-29 18:05:00 UTC by Developer (NYOWORKS compliance)*

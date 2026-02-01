@@ -1,0 +1,19 @@
+# Build outputs
+dist/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Testing
+coverage/
+
+# IDE
+.vscode/*
+!.vscode/extensions.json

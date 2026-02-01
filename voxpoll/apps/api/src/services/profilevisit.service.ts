@@ -235,12 +235,12 @@ async function getFeatures(userId: string): Promise<ProfileVisitFeatures> {
     .limit(1)
 
   if (!user) {
-    return PROFILE_VISIT_FEATURES['FREE']
+    return PROFILE_VISIT_FEATURES['FREE']!
   }
 
   const tier = user.subscriptionTier || 'FREE'
   const features = PROFILE_VISIT_FEATURES[tier]
-  return features ? features : PROFILE_VISIT_FEATURES['FREE']
+  return features ?? PROFILE_VISIT_FEATURES['FREE']!
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

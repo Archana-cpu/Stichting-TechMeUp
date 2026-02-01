@@ -43,7 +43,19 @@ export const XP_VALUES = {
   commentWritten: 5,
   commentUpvoted: 2,
   dailyLogin: 10,
-  streakBonus: 5, // per day in streak
+  streakBonus: 5,
+} as const
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Achievement Milestones (XP-based)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const XP_MILESTONES = {
+  BRONZE: { threshold: 1000, badgeCode: 'ACHIEVEMENT_BRONZE' },
+  SILVER: { threshold: 10000, badgeCode: 'ACHIEVEMENT_SILVER' },
+  GOLD: { threshold: 50000, badgeCode: 'ACHIEVEMENT_GOLD' },
+  PLATINUM: { threshold: 100000, badgeCode: 'ACHIEVEMENT_PLATINUM' },
+  DIAMOND: { threshold: 500000, badgeCode: 'ACHIEVEMENT_DIAMOND' },
 } as const
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -211,9 +223,12 @@ class GamificationServiceClass {
     // Check and award any new badges earned
     const newBadges = await this.checkAndAwardBadges(userId)
 
+    // Check and award achievement badges based on new total XP
+    const achievementBadges = await this.checkAndAwardAchievementBadges(userId, result.balanceAfter)
+
     return {
       ...result,
-      newBadges,
+      newBadges: [...newBadges, ...achievementBadges],
     }
   }
 
@@ -401,6 +416,43 @@ class GamificationServiceClass {
       xpReward: badge.xpReward,
       earnedAt: new Date(),
     }
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Award Verification Badge on Level Change
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  async awardVerificationBadge(userId: string, verificationLevel: 0 | 1 | 2 | 3 | 4): Promise<AwardedBadge | null> {
+    if (verificationLevel === 0) return null
+
+    const badgeCodeMap: Record<1 | 2 | 3 | 4, string> = {
+      1: 'VERIFIED_LEVEL_1',
+      2: 'VERIFIED_LEVEL_2',
+      3: 'VERIFIED_LEVEL_3',
+      4: 'VERIFIED_LEVEL_4',
+    }
+
+    const badgeCode = badgeCodeMap[verificationLevel]
+    return this.awardBadgeByCode(userId, badgeCode)
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Check and Award Achievement Badges (XP Milestones)
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  async checkAndAwardAchievementBadges(userId: string, totalXp: number): Promise<AwardedBadge[]> {
+    const awardedBadges: AwardedBadge[] = []
+
+    for (const [key, milestone] of Object.entries(XP_MILESTONES)) {
+      if (totalXp >= milestone.threshold) {
+        const badge = await this.awardBadgeByCode(userId, milestone.badgeCode)
+        if (badge) {
+          awardedBadges.push(badge)
+        }
+      }
+    }
+
+    return awardedBadges
   }
 }
 

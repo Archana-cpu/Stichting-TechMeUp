@@ -83,3 +83,21 @@ export const paginationSchema = z.object({
   page: z.coerce.number().int().positive().optional().default(1),
   limit: z.coerce.number().int().positive().max(100).optional().default(20),
 })
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Profile Visit Schemas (Bible: 03-FEATURES/08-social.md)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const profileVisitSourceSchema = z.enum([
+  'SEARCH',
+  'FEED',
+  'COMMENT',
+  'MENTION',
+  'DIRECT',
+  'EXTERNAL',
+])
+
+export const trackVisitSchema = z.object({
+  source: profileVisitSourceSchema.optional().default('DIRECT'),
+  anonymous: z.coerce.boolean().optional().default(false),
+})

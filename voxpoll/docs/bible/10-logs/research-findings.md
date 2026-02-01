@@ -1,7 +1,9 @@
 # Research Findings
 
-> NyoWorks Research Log
-> Last Updated: 2026-01-29
+> NYOWORKS Task Management System v4.0
+> Project: VoxPoll
+> Project Code: VOX
+> Last Updated: 2026-01-29 18:10:00 UTC
 
 ---
 
@@ -22,12 +24,13 @@ This document tracks research outcomes, technical investigations, and discovery 
 ## Format
 
 ```markdown
-## [RESEARCH-XXX] Research Title
+## [RESEARCH-YYYYMMDD-NNN] Research Title
 
-**Date**: YYYY-MM-DD
-**Researcher**: Agent name
+**Date**: YYYY-MM-DD HH:MM:SS UTC
+**Researcher**: Agent role
 **Priority**: P0/P1/P2/P3
 **Tags**: [tag1, tag2]
+**Related Task**: TASK-YYYYMMDD-NNN (if applicable)
 
 ### Context
 
@@ -43,14 +46,14 @@ Action items based on findings.
 
 ### Related Tasks
 
-- TASK-XXX: Related task
+- TASK-YYYYMMDD-NNN: Related task description
 ```
 
 ---
 
 ## Active Research
 
-<!-- No active research entries yet -->
+<!-- No active research entries -->
 
 ---
 
@@ -60,4 +63,5 @@ Action items based on findings.
 
 ---
 
-*Created as part of NyoWorks Bible standardization on 2026-01-29*
+*NYOWORKS Task Management System v4.0 - VoxPoll Project*
+*Last migrated: 2026-01-29 18:10:00 UTC by Developer (NYOWORKS compliance)*

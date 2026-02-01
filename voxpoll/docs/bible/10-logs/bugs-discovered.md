@@ -1,33 +1,35 @@
 # Bugs Discovered
 
-> NyoWorks Bug Tracking
-> Last Updated: 2026-01-29
+> NYOWORKS Task Management System v4.0
+> Project: VoxPoll
+> Project Code: VOX
+> Last Updated: 2026-01-29 18:05:00 UTC
 
 ---
 
 ## Overview
 
-This document tracks bugs discovered during development, testing, or production monitoring. Each bug automatically generates a task in `tasks-active.md`.
+This document tracks bugs discovered during development, testing, or production monitoring. Each bug automatically generates a task in tasks-active.md.
 
 **Workflow:**
-1. Bug discovered → Log here with reproduction steps
-2. Assign priority based on impact
-3. Create corresponding TASK-XXX in tasks-active.md
-4. Developer claims task and implements fix
-5. Mark bug as FIXED with resolution details
+1. Bug discovered → Log here with `python _tools/nyo.py bug report`
+2. CLI assigns priority based on impact
+3. CLI creates corresponding TASK-YYYYMMDD-NNN in tasks-active.md
+4. Developer claims task with `python _tools/nyo.py task claim <task-id>`
+5. Developer fixes and marks done with `python _tools/nyo.py bug fix <bug-id> <task-id>`
 
 ---
 
 ## Format
 
 ```markdown
-## [BUG-XXX] Short Bug Description
+## [BUG-YYYYMMDD-NNN] Short Bug Description
 
-**Date**: YYYY-MM-DD HH:MM
+**Date**: YYYY-MM-DD HH:MM:SS UTC
 **Priority**: P0/P1/P2/P3
 **Status**: OPEN / INVESTIGATING / IN_PROGRESS / FIXED
-**Reported By**: Agent/User name
-**Related Task**: TASK-XXX
+**Reported By**: Agent role
+**Related Task**: TASK-YYYYMMDD-NNN
 **Bible Refs**: [P-XXX, T-XXX] (if applicable)
 
 ### Impact
@@ -63,9 +65,9 @@ Analysis of why this bug exists (filled during investigation)
 
 ### Resolution
 
-- **Fixed By**: TASK-XXX
+- **Fixed By**: TASK-YYYYMMDD-NNN
 - **Fix Description**: What was changed
-- **Fixed At**: YYYY-MM-DD HH:MM
+- **Fixed At**: YYYY-MM-DD HH:MM:SS UTC
 - **Deployed**: YYYY-MM-DD (production deployment date)
 ```
 
@@ -101,4 +103,6 @@ Analysis of why this bug exists (filled during investigation)
 
 ---
 
-*Created as part of NyoWorks Bible standardization on 2026-01-29*
+*NYOWORKS Task Management System v4.0 - VoxPoll Project*
+*Use CLI: python _tools/nyo.py bug [report|list|fix]*
+*Last migrated: 2026-01-29 18:05:00 UTC by Developer (NYOWORKS compliance)*

@@ -171,3 +171,15 @@ testRoutes.get(
   auth,
   (c) => testController.getUserBadges(c)
 )
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Badge Card Generation
+// ─────────────────────────────────────────────────────────────────────────────
+
+// POST /tests/:testId/results/:resultId/share-card - Generate share card
+testRoutes.post(
+  '/:testId/results/:resultId/share-card',
+  optionalAuth,
+  rateLimit(RATE_LIMITS.vote),
+  (c) => testController.generateShareCard(c)
+)

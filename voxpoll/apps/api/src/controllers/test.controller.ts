@@ -13,6 +13,7 @@ import {
   type AddQuizQuestionInput,
   type SubmitPersonalityResultInput,
 } from '../services/test.service'
+import { badgeCardService, type ShareCardTemplate } from '../services/badge-card.service'
 import type { TestFilters, TestSortOption, TestCategory } from '../repositories/test.repository'
 import type { AppEnv } from '../types'
 import { PAGINATION } from '../constants/limits'
@@ -291,6 +292,43 @@ class TestControllerClass {
     return c.json({
       success: true,
       data: badges,
+    })
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // POST /tests/:testId/results/:resultId/share-card - Generate share card
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  async generateShareCard(c: Context<AppEnv>) {
+    const testId = c.req.param('testId')
+    const resultId = c.req.param('resultId')
+    const userId = c.get('userId') || null
+    const body = await c.req.json()
+
+    const template = (body.template as ShareCardTemplate) || 'VISUAL'
+    const resultTitle = body.resultTitle as string
+    const resultDescription = body.resultDescription as string | undefined
+    const resultImageUrl = body.resultImageUrl as string | undefined
+    const testTitle = body.testTitle as string
+    const matchPercentage = body.matchPercentage as number | undefined
+    const comparisonData = body.comparisonData as { userResult: string; results: { label: string; percentage: number }[] } | undefined
+
+    const shareCard = await badgeCardService.generateCard({
+      testId,
+      resultId,
+      userId,
+      resultTitle,
+      resultDescription,
+      resultImageUrl,
+      testTitle,
+      matchPercentage,
+      template,
+      comparisonData,
+    })
+
+    return c.json({
+      success: true,
+      data: shareCard,
     })
   }
 

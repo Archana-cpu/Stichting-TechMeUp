@@ -12,6 +12,7 @@ import {
   updateSettingsSchema,
   searchUsersSchema,
   paginationSchema,
+  trackVisitSchema,
 } from '../validators/user.validators'
 import type { AppEnv } from '../types'
 
@@ -157,6 +158,28 @@ userRoutes.patch(
   (c) => userController.updateNotificationPreferences(c)
 )
 
+// GET /users/me/visitors - Get my profile visitors (Plus/Premium only)
+userRoutes.get(
+  '/me/visitors',
+  auth,
+  zValidator('query', paginationSchema),
+  (c) => userController.getMyVisitors(c)
+)
+
+// GET /users/me/visitors/count - Get visitor count (Plus/Premium only)
+userRoutes.get(
+  '/me/visitors/count',
+  auth,
+  (c) => userController.getVisitorCount(c)
+)
+
+// GET /users/me/profile-visit-features - Get profile visit tier features
+userRoutes.get(
+  '/me/profile-visit-features',
+  auth,
+  (c) => userController.getProfileVisitFeatures(c)
+)
+
 // ─────────────────────────────────────────────────────────────────────────────
 // GDPR Compliance Routes (Bible: 05-TECH)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -247,4 +270,12 @@ userRoutes.get(
 userRoutes.get(
   '/:username/badges',
   (c) => userController.getUserBadges(c)
+)
+
+// POST /users/:username/visit - Track profile visit (Bible: 03-FEATURES/08-social.md)
+userRoutes.post(
+  '/:username/visit',
+  optionalAuth,
+  zValidator('query', trackVisitSchema),
+  (c) => userController.trackProfileVisit(c)
 )

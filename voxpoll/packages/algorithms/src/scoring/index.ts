@@ -3,7 +3,7 @@
  */
 
 export { calculateTrustScore, type TrustScoreInput, type TrustScoreResult } from "./trust-score.js";
-export { calculateWilsonScore, type WilsonScoreInput } from "./wilson-score.js";
+export { calculateWilsonScore, calculateWilsonInterval, type WilsonScoreInput } from "./wilson-score.js";
 export { calculateHotScore, calculateControversy, calculateBestScore, type HotScoreInput } from "./hot-score.js";
 export {
   calculateReliabilityScore,

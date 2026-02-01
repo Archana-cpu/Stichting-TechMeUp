@@ -6,6 +6,7 @@
 import type { Context } from 'hono'
 import { userService } from '../services/user.service'
 import { notificationService } from '../services/notification.service'
+import { profileVisitService } from '../services/profilevisit.service'
 import type { AppEnv } from '../types'
 import { PAGINATION } from '../constants/limits'
 
@@ -514,6 +515,99 @@ class UserControllerClass {
     return c.json({
       success: true,
       data: preferences,
+    })
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // POST /users/:username/visit - Track profile visit
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  async trackProfileVisit(c: Context<AppEnv>) {
+    const username = c.req.param('username')
+    const visitorId = c.get('userId')
+    const query = c.req.query()
+    const source = (query['source'] || 'DIRECT') as 'SEARCH' | 'FEED' | 'COMMENT' | 'MENTION' | 'DIRECT' | 'EXTERNAL'
+    const anonymous = query['anonymous'] === 'true'
+
+    const profile = await userService.getProfile(username)
+
+    if (anonymous && visitorId) {
+      const canAnonymous = await profileVisitService.canVisitAnonymously(visitorId)
+      if (!canAnonymous) {
+        return c.json({
+          success: false,
+          error: 'Anonim ziyaret için Premium üyelik gereklidir.',
+        }, 403)
+      }
+    }
+
+    const visit = await profileVisitService.trackVisit(
+      profile.id,
+      visitorId,
+      source,
+      anonymous
+    )
+
+    return c.json({
+      success: true,
+      data: visit,
+    }, 201)
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // GET /users/me/visitors - Get my profile visitors
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  async getMyVisitors(c: Context<AppEnv>) {
+    const userId = c.get('userId')!
+    const { page, limit } = this.getPaginationParams(c)
+    const offset = (page - 1) * limit
+
+    const visitors = await profileVisitService.getVisitors(
+      userId,
+      userId,
+      limit,
+      offset
+    )
+
+    return c.json({
+      success: true,
+      data: visitors,
+      meta: {
+        page,
+        limit,
+        total: visitors.length,
+      },
+    })
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // GET /users/me/visitors/count - Get visitor count
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  async getVisitorCount(c: Context<AppEnv>) {
+    const userId = c.get('userId')!
+
+    const count = await profileVisitService.getVisitorCount(userId, userId)
+
+    return c.json({
+      success: true,
+      data: count,
+    })
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // GET /users/me/profile-visit-features - Get profile visit features
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  async getProfileVisitFeatures(c: Context<AppEnv>) {
+    const userId = c.get('userId')!
+
+    const features = await profileVisitService.getFeatures(userId)
+
+    return c.json({
+      success: true,
+      data: features,
     })
   }
 

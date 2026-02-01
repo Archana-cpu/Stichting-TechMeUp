@@ -384,24 +384,26 @@
 
 ### P2-004: Profile Visits
 - **Bible**: 03-FEATURES/08-social.md
-- **Durum**: [~] K\u0131smen Tamamland\u0131 (Schema + Service %80, Routes pending)
+- **Durum**: [x] Tamamlandi
 - **Detay**:
   - [x] profileVisitSourceEnum enum eklendi
   - [x] profileVisits table schema olusturuldu (analytics.ts)
   - [x] profilevisit.service.ts olusturuldu
   - [x] Tier-based access: FREE (no access), PLUS (7 days), PREMIUM (30 days + anonymous)
   - [x] Anonymous visit option (PREMIUM only)
-  - [ ] Routes ve controllers (pending - TypeScript workspace link issue)
+  - [x] Routes ve controllers tamamlandi
+  - [x] OpenAPI schemas eklendi
   - [ ] Weekly insights email (deferred)
 - **Dosyalar**:
   - `packages/database/src/db/schema/enums.ts` (profileVisitSourceEnum eklendi)
   - `packages/database/src/db/schema/analytics.ts` (profileVisits table eklendi)
   - `packages/database/src/index.ts` (ProfileVisit type export eklendi)
-  - `packages/api/src/services/profilevisit.service.ts` (olusturuldu)
-  - `packages/api/src/controllers/user.controller.ts` (pending)
-  - `packages/api/src/routes/users.ts` (pending)
-- **Test**: `packages/api/src/test/profile-visits.test.ts` (pending)
-- **Not**: Service oluşturuldu ancak workspace dependency link sorunu nedeniyle TypeScript build hatası var. pnpm install veya IDE restart ile çözülebilir.
+  - `apps/api/src/services/profilevisit.service.ts` (olusturuldu)
+  - `apps/api/src/controllers/user.controller.ts` (trackProfileVisit, getMyVisitors, getVisitorCount, getProfileVisitFeatures eklendi)
+  - `apps/api/src/routes/users.ts` (POST /:username/visit, GET /me/visitors, GET /me/visitors/count, GET /me/profile-visit-features eklendi)
+  - `apps/api/src/validators/user.validators.ts` (profileVisitSourceSchema, trackVisitSchema eklendi)
+  - `apps/api/src/lib/openapi.ts` (ProfileVisit, ProfileVisitFeatures, ProfileVisitorWithUser schemas eklendi)
+- **Test**: `apps/api/src/test/profile-visits.test.ts` (pending)
 
 ### P2-005: Hot Score Algorithm
 - **Bible**: 03-FEATURES

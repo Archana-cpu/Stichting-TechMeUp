@@ -216,25 +216,47 @@ voxpoll/
 │
 ├── apps/
 │   │
-│   ├── web/                          # Main web application
+│   ├── web/                          # Unified web application (individual + org + admin)
 │   │   ├── app/                      # Next.js App Router
 │   │   │   ├── (auth)/              # Auth routes (login, register)
-│   │   │   ├── (main)/              # Main app routes
+│   │   │   │   ├── login/
+│   │   │   │   ├── register/
+│   │   │   │   ├── verify/
+│   │   │   │   └── forgot-password/
+│   │   │   │
+│   │   │   ├── (individual)/        # Individual user routes (Free, Plus, Premium)
 │   │   │   │   ├── feed/            # Feed page
 │   │   │   │   ├── poll/[id]/       # Poll detail & participation
 │   │   │   │   ├── survey/[id]/     # Survey detail & participation
 │   │   │   │   ├── test/[id]/       # Test detail & participation
+│   │   │   │   ├── live/[code]/     # Live poll participation
 │   │   │   │   ├── create/          # Content creation
 │   │   │   │   ├── profile/[username]/ # User profiles
 │   │   │   │   ├── settings/        # User settings
 │   │   │   │   └── notifications/   # Notification center
-│   │   │   ├── (org)/               # Organization routes
-│   │   │   │   ├── dashboard/       # Org dashboard
-│   │   │   │   ├── surveys/         # Survey management
-│   │   │   │   ├── analytics/       # Analytics views
-│   │   │   │   ├── members/         # Member management
-│   │   │   │   └── settings/        # Org settings
+│   │   │   │
+│   │   │   ├── (org)/               # Organization routes (B2B SaaS)
+│   │   │   │   └── [slug]/          # Dynamic org slug
+│   │   │   │       ├── dashboard/   # Org dashboard
+│   │   │   │       ├── surveys/     # Survey management
+│   │   │   │       │   ├── create/
+│   │   │   │       │   ├── [id]/
+│   │   │   │       │   └── analytics/
+│   │   │   │       ├── analytics/   # Advanced analytics
+│   │   │   │       ├── members/     # Member management
+│   │   │   │       ├── billing/     # Subscription & billing
+│   │   │   │       └── settings/    # Org settings (SSO, branding)
+│   │   │   │
+│   │   │   ├── (admin)/             # Platform admin routes (PLATFORM_ADMIN only)
+│   │   │   │   ├── dashboard/       # Platform metrics
+│   │   │   │   ├── users/           # User management
+│   │   │   │   ├── organizations/   # Org management
+│   │   │   │   ├── content/         # Content moderation
+│   │   │   │   ├── reports/         # Abuse reports
+│   │   │   │   └── settings/        # Platform settings
+│   │   │   │
 │   │   │   ├── api/                 # API routes (webhooks only)
+│   │   │   ├── middleware.ts        # RBAC permission gating
 │   │   │   ├── layout.tsx
 │   │   │   └── globals.css
 │   │   ├── components/              # Web-specific components
@@ -244,33 +266,33 @@ voxpoll/
 │   │   ├── tailwind.config.ts
 │   │   └── package.json
 │   │
-│   ├── mobile/                       # React Native application
+│   ├── mobile/                       # Unified mobile app (individual + org)
 │   │   ├── app/                      # Expo Router
-│   │   │   ├── (tabs)/              # Tab navigation
-│   │   │   │   ├── feed.tsx
-│   │   │   │   ├── search.tsx
-│   │   │   │   ├── create.tsx
+│   │   │   ├── (tabs)/              # Tab navigation (individual users)
+│   │   │   │   ├── feed.tsx         # Home feed
+│   │   │   │   ├── search.tsx       # Explore/search
+│   │   │   │   ├── create.tsx       # Create content
 │   │   │   │   ├── notifications.tsx
 │   │   │   │   └── profile.tsx
-│   │   │   ├── poll/[id].tsx
-│   │   │   ├── test/[id].tsx
-│   │   │   ├── auth/
+│   │   │   │
+│   │   │   ├── org/                 # Organization screens
+│   │   │   │   └── [slug]/          # Dynamic org slug
+│   │   │   │       ├── dashboard.tsx
+│   │   │   │       ├── surveys.tsx
+│   │   │   │       ├── analytics.tsx
+│   │   │   │       └── members.tsx
+│   │   │   │
+│   │   │   ├── poll/[id].tsx        # Poll detail
+│   │   │   ├── survey/[id].tsx      # Survey detail
+│   │   │   ├── test/[id].tsx        # Test detail
+│   │   │   ├── live/[code].tsx      # Live poll
+│   │   │   ├── auth/                # Auth screens
 │   │   │   └── _layout.tsx
 │   │   ├── components/              # Mobile-specific components
 │   │   ├── lib/                     # Mobile-specific utilities
 │   │   ├── assets/                  # Images, fonts
 │   │   ├── app.json
 │   │   └── package.json
-│   │
-│   └── platform/                     # Admin/Platform management
-│       ├── app/                      # Next.js App Router
-│       │   ├── dashboard/           # Platform metrics
-│       │   ├── users/               # User management
-│       │   ├── organizations/       # Org management
-│       │   ├── content/             # Content moderation
-│       │   ├── reports/             # Abuse reports
-│       │   └── settings/            # Platform settings
-│       └── package.json
 │
 ├── packages/
 │   │
@@ -417,19 +439,26 @@ voxpoll/
 │              │                      │                      │                   │
 │              ▼                      ▼                      ▼                   │
 │       ┌─────────────┐        ┌─────────────┐        ┌─────────────┐           │
-│       │     ui      │        │   actions   │        │             │           │
-│       └──────┬──────┘        └──────┬──────┘        │             │           │
-│              │                      │               │             │           │
-│              └──────────────────────┼───────────────┘             │           │
-│                                     │                             │           │
-│              ┌──────────────────────┼──────────────────────┐      │           │
-│              │                      │                      │      │           │
-│              ▼                      ▼                      ▼      │           │
+│       │     ui      │        │   actions   │        │     api     │           │
+│       └──────┬──────┘        └──────┬──────┘        └──────┬──────┘           │
+│              │                      │                      │                   │
+│              └──────────────────────┼──────────────────────┘                   │
+│                                     │                                          │
+│              ┌──────────────────────┼──────────────────────┐                   │
+│              │                      │                      │                   │
+│              ▼                      ▼                      ▼                   │
 │       ┌─────────────┐        ┌─────────────┐        ┌─────────────┐           │
-│       │     web     │        │   mobile    │        │  platform   │           │
+│       │     web     │        │   mobile    │        │             │           │
+│       │ (unified)   │        │ (unified)   │        │             │           │
 │       └─────────────┘        └─────────────┘        └─────────────┘           │
 │                                                                                 │
-│  RULES:                                                                        │
+│  UNIFIED APP ARCHITECTURE:                                                     │
+│  - web & mobile apps serve all user types (individual + org + admin)           │
+│  - Route/screen-based separation via Next.js route groups & Expo Router        │
+│  - Single deployment per platform (web: Vercel, mobile: EAS)                   │
+│  - RBAC middleware controls access to (org)/* and (admin)/* routes             │
+│                                                                                 │
+│  DEPENDENCY RULES:                                                             │
 │  - Arrows point from dependent to dependency                                   │
 │  - No circular dependencies allowed                                            │
 │  - Apps depend on packages, packages depend on other packages                  │
@@ -437,6 +466,21 @@ voxpoll/
 │                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
+
+## Unified App Architecture Decision
+
+**DECISION-PM-001** (2026-01-29): Adopt unified app architecture
+
+**Rationale**:
+- Single app serves all user types (individual users, organization members, platform admins)
+- Route-based separation: `(individual)/`, `(org)/[slug]/`, `(admin)/`
+- Simpler deployment, authentication, and code sharing
+- Organization users can access individual features simultaneously
+
+**User Types in Same App**:
+- Individual users (Free, Plus, Premium): Access `(individual)/*` routes
+- Organization members (B2B SaaS): Access `(org)/[slug]/*` routes (permission-gated by role)
+- Platform admins: Access `(admin)/*` routes (PLATFORM_ADMIN role only)
 
 ## Package Responsibilities
 

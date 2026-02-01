@@ -293,6 +293,65 @@ Response includes:
           slug: { type: 'string' },
         },
       },
+      ProfileVisit: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', format: 'cuid2' },
+          profileId: { type: 'string', format: 'cuid2' },
+          visitorId: { type: 'string', format: 'cuid2', nullable: true },
+          source: {
+            type: 'string',
+            enum: ['SEARCH', 'FEED', 'COMMENT', 'MENTION', 'DIRECT', 'EXTERNAL'],
+            description: 'How the visitor found the profile',
+          },
+          isAnonymous: {
+            type: 'boolean',
+            description: 'Whether the visit was anonymous (Premium only)',
+          },
+          visitedAt: { type: 'string', format: 'date-time' },
+        },
+      },
+      ProfileVisitFeatures: {
+        type: 'object',
+        properties: {
+          canSeeVisitors: {
+            type: 'boolean',
+            description: 'Can see who visited profile (Plus/Premium)',
+          },
+          canVisitAnonymously: {
+            type: 'boolean',
+            description: 'Can visit profiles anonymously (Premium only)',
+          },
+          visitHistoryDays: {
+            type: 'integer',
+            description: 'Days of visitor history (0=FREE, 7=PLUS, 30=PREMIUM)',
+          },
+        },
+      },
+      ProfileVisitorWithUser: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', format: 'cuid2' },
+          profileId: { type: 'string', format: 'cuid2' },
+          source: {
+            type: 'string',
+            enum: ['SEARCH', 'FEED', 'COMMENT', 'MENTION', 'DIRECT', 'EXTERNAL'],
+          },
+          visitedAt: { type: 'string', format: 'date-time' },
+          visitor: {
+            type: 'object',
+            nullable: true,
+            properties: {
+              id: { type: 'string', format: 'cuid2' },
+              username: { type: 'string' },
+              displayName: { type: 'string', nullable: true },
+              avatarUrl: { type: 'string', format: 'uri', nullable: true },
+              verificationLevel: { type: 'integer' },
+            },
+            description: 'Visitor user info (null for anonymous visits)',
+          },
+        },
+      },
       Tag: {
         type: 'object',
         properties: {
